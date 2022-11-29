@@ -18,7 +18,7 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 
 # Introduction
 
-Models of trophic dynamics in spatial ecology generally assume no interactions between the essential nutrient elements and describe the associated transfer processes as a function of only the potentially most limiting parts (i.e., [Liebig's law](https://en.wikipedia.org/wiki/Justus_von_Liebig)). However, the "*Law of the Minimum*" does not hold consistently at landscape scales (e.g., [Sinclair and Park, 1993](https://doi.org/10.2134/agronj1993.00021962008500030040x)), nor at different [trophic levels](https://en.wikipedia.org/wiki/Trophic_level). Ecological theory has not yet been able to accurately characterize and predict the underlying spatial nutrient transfer relationships, and their associated nutrient fluxes across food system boundaries. So, understanding the statistical nature of both survey and experimental results remain important undertakings for managing crop, animal and human nutrition, as well as for the conservation of essentially [non-renewable](https://en.wikipedia.org/wiki/Non-renewable_resource) resources such as productive soils and potable water ... within time frames meaningful to humans.
+Models of trophic dynamics in spatial ecology generally assume no interactions between the essential nutrient elements and describe the associated transfer processes as a function of only the potentially most limiting parts (i.e., [Liebig's law](https://en.wikipedia.org/wiki/Justus_von_Liebig)). However, the "*Law of the Minimum*" does not hold consistently at landscape scales (e.g., [Sinclair and Park, 1993](https://doi.org/10.2134/agronj1993.00021962008500030040x)), nor at different [trophic levels](https://en.wikipedia.org/wiki/Trophic_level). Ecological theory has not yet been able to accurately characterize and predict the underlying spatial nutrient transfer relationships, and their associated nutrient fluxes across food system boundaries. So, understanding the statistical nature of both survey and experimental results remain important undertakings for managing crop, animal and human nutrition, as well as for the conservation of essentially [non-renewable](https://en.wikipedia.org/wiki/Non-renewable_resource) resources such as productive soils and potable water.
 
 <br>
 ```{r, echo=FALSE, fig.align="center", fig.cap="**Fig. 1**: The main trophic pathways in agricultural systems within a pixel or voxel. Note that the dashed arrow (from Food crops to Livestock) flags one potentially pathological trophic pathway that can occur in some food systems.", out.width = '60%'}
@@ -66,7 +66,7 @@ datatable(vars)
 ```
 
 <br>
-You can download all of the data needed to run this notebook from our [GeoNutrition](https://osf.io/47t3u/) OSF repository using the following links: [`MW_ET_grain_ICP.csv`](https://osf.io/cjfbs), [`ET_grids_250m.zip`](https://osf.io/827eb) and [`MW_grids_250m.zip`](https://osf.io/fvzh3). Place the 3 files into your working directory. Note that the `ET_grids_250.zip` download is quite large (> 1 Gb), and may take a bit of time depending on your connection. The next chunks load and merge the GeoNutrition data with the spatial (gridded) features.
+You can download all of the data needed to run this notebook from our [GeoNutrition](https://osf.io/47t3u/) OSF repository using the following links: [`MW_ET_grain_ICP.csv`](https://osf.io/cjfbs), [`ET_grids_250m.zip`](https://osf.io/827eb) and [`MW_grids_250m.zip`](https://osf.io/fvzh3). Place the 3 files into your working directory. Note that the `ET_grids_250.zip` download is relatively large (> 1 Gb), and may take a bit of time to transfer, depending on your connection. The next chunks load and merge the GeoNutrition data with the spatial (gridded) features.
 
 ```{r}
 icpdat <- read.table("MW_ET_grain_ICP.csv", header=T, sep=",") ## ICP-MS data for ET & MW
@@ -204,9 +204,9 @@ boxplot(coda$Se ~ coda$crop, notch = T, ylab = "Se", xlab = "", cex.axis = 1, ce
 boxplot(coda$Mo ~ coda$crop, notch = T, ylab = "Mo", xlab = "", cex.axis = 1, cex.lab = 1.3, las = 2)
 ```
 
-## Compositional main effects regressions
+## Ionomic differences between crop species
 
-We run a compositional main effects regression (see [van den Boogaart and Tolosana-Delgado, 2013](https://link.springer.com/book/10.1007/978-3-642-36809-7)) using maize as the control crop. This quantifies the average ionomic differences (and variances) between crop species that are shown in Fig. 3.
+We run a compositional main effects regression ([van den Boogaart and Tolosana-Delgado, 2013](https://link.springer.com/book/10.1007/978-3-642-36809-7)) using maize as the control crop. This quantifies the average ionomic differences (and variances) between crop species that are shown in Fig. 3 and can be used as a baseline for the spatial models that are presented in section 4.
 
 ```{r}
 icpdat$crop <- factor(icpdat$crop, levels=c('maiz','sorg','pmil','fmil','teff','rice','whea','barl','trit'))
@@ -358,10 +358,37 @@ knitr::include_graphics("MW_coda_maps.jpg")
 knitr::include_graphics("ET_coda_maps.jpg")
 ```
 
-## Ensemble learner testing
+## Ensemble learner tests
 
 ```{r}
+# Stack Ethiopia prediction grids
+et_lis <- list.files(path="./Results", pattern="ET_ens.tif", full.names = T)
+et_ens <- stack(et_lis)
+names(et_ens) <- c("Ca_ens","Co_ens","Cr_ens","Cu_ens","Fe_ens","K_ens","Mg_ens","Mn_ens","Mo_ens","Na_ens",
+                   "P_ens","Se_ens","V_ens","Zn_ens")
 
+# Extract ensemble predictions at the Ethiopia testing locations
+et_val <- gn_val[which(gn_val$survey == 'ET'), ]
+coordinates(et_val) <- ~x+y
+projection(et_val) <- projection(et_ens)
+et_ens <- extract(et_ens, et_val)
+et_val <- as.data.frame(cbind(et_val, et_ens))
+
+# Stack Malawi ensemble prediction grids
+mw_lis <- list.files(path="./Results", pattern="MW_ens.tif", full.names = T)
+mw_ens <- stack(mw_lis)
+names(mw_ens) <- c("Ca_ens","Co_ens","Cr_ens","Cu_ens","Fe_ens","K_ens","Mg_ens","Mn_ens","Mo_ens","Na_ens",
+                   "P_ens","Se_ens","V_ens","Zn_ens")
+
+# Extract ensemble predictions at the Malawi testing locations
+mw_val <- gn_val[which(gn_val$survey == 'MW'), ]
+coordinates(mw_val) <- ~x+y
+projection(mw_val) <- projection(mw_ens)
+mw_ens <- extract(mw_ens, mw_val)
+mw_val <- as.data.frame(cbind(mw_val, mw_ens))
+
+# Row bind the Ethiopia and Malawi data frames
+gn_val <- rbind(et_val, mw_val)
 ```
 
 
