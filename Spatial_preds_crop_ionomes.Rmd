@@ -1,6 +1,6 @@
 ---
 title: Spatial predictions of cereal grain ionomes from Ethiopia and Malawi
-author: M.G. Walsh, A.M. Sila, D.B. Kumssa, A.R. Mossa, T. Amede, P.C. Nalivata, S. Gameda, M.R. Broadley, R.M. Lark, B.A. Walsh, R. Rodríguez-Iglesias, J. Chamberlin, and S. Snapp
+author: M.G. Walsh, A.M. Sila, D.B. Kumssa, A.R. Mossa, T. Amede, P.C. Nalivata, S. Gameda, M.R. Broadley, R.M. Lark, B.A. Walsh, R. Rodríguez-Iglesias, J. Chamberlin and S. Snapp
 date: "`r format(Sys.time(), '%d, %B, %Y')`"
 output:
   html_document:
@@ -18,7 +18,7 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 
 # Introduction
 
-Models of trophic dynamics in spatial ecology generally assume no interactions between the essential nutrient elements and describe the associated transfer processes as a function of only the potentially most limiting parts (i.e., [Liebig's law](https://en.wikipedia.org/wiki/Justus_von_Liebig)). However, the "*Law of the Minimum*" does not hold consistently at landscape scales (e.g., [Sinclair and Park, 1993](https://doi.org/10.2134/agronj1993.00021962008500030040x)), nor at different [trophic levels](https://en.wikipedia.org/wiki/Trophic_level). Ecological theory has not yet been able to accurately characterize and predict the underlying spatial nutrient transfer relationships, and their associated nutrient fluxes across food system boundaries. So, understanding the statistical nature of both survey and experimental results remain important undertakings for managing crop, animal and human nutrition, as well as for the conservation of essentially [non-renewable](https://en.wikipedia.org/wiki/Non-renewable_resource) resources within time frames meaningful to humans ... such as productive soils and potable water.
+Models of trophic dynamics in spatial ecology generally assume no interactions between the essential nutrient elements and describe the associated transfer processes as a function of only the potentially most limiting parts (i.e., [Liebig's law](https://en.wikipedia.org/wiki/Justus_von_Liebig)). However, the "*Law of the Minimum*" does not hold consistently at landscape scales (e.g., [Sinclair and Park, 1993](https://doi.org/10.2134/agronj1993.00021962008500030040x)), nor at different [trophic levels](https://en.wikipedia.org/wiki/Trophic_level). Ecological theory has not yet been able to accurately characterize and predict the underlying spatial nutrient transfer relationships, and their associated nutrient fluxes across food system boundaries. So, understanding the statistical nature of both survey and experimental results remain important undertakings for managing crop, animal and human nutrition, as well as for the conservation of essentially [non-renewable](https://en.wikipedia.org/wiki/Non-renewable_resource) resources such as productive soils and potable water ... within time frames meaningful to humans.
 
 <br>
 ```{r, echo=FALSE, fig.align="center", fig.cap="**Fig. 1**: The main trophic pathways in agricultural systems within a pixel or voxel. Note that the dashed arrow (from Food crops to Livestock) flags one potentially pathological trophic pathway that can occur in some food systems.", out.width = '60%'}
@@ -34,9 +34,9 @@ knitr::include_graphics("trophic_levels.jpg")
 knitr::include_graphics("supplement.jpg")
 ```
 
-[Compositional data](https://doi.org/10.3389/fpls.2013.00039) profiles such as those shown in Fig. 2 present a special class of multivariate [labeling](https://en.wikipedia.org/wiki/Labeled_data) problems for data mining, machine learning, prediction, monitoring and [recommender systems](https://en.wikipedia.org/wiki/Recommender_system) because they contain multiple labels that may be interdependent. Another important characteristic of ionomic data is that they are usually defined as vectors with strictly positive components whose sum is constant (e.g, 1 or 100%). Both these characteristics are solvable, but they have not been adequately tested in terms of their potential influence on describing and predicting the associated soil-crop interactions and their potential nutritional outcomes for livestock and people.
+[Compositional data](https://doi.org/10.3389/fpls.2013.00039) profiles such as those shown in Fig. 2 present a special class of multivariate [labeling](https://en.wikipedia.org/wiki/Labeled_data) problems for data mining, machine learning, prediction, monitoring and [recommender systems](https://en.wikipedia.org/wiki/Recommender_system) because they contain multiple labels that may be interdependent. Another important characteristic of ionomic data is that they are usually defined as vectors with strictly positive components whose sum is constant (e.g, 1 or 100%). Both these characteristics are solvable, but they have not been adequately tested in terms of their potential influence in describing and predicting the associated soil-crop interactions and their potential nutritional outcomes for livestock and people.
 
-This notebook examines spatial prediction problems associated with mineral nutrient deficiency risks using cereal grain data from Ethiopia and Malawi. The data we will be using were generated by the [GeoNutrition Project](http://www.geonutrition.com). The nationally representative cropland sampling frames and the laboratory methods that were used in the data collections are described in [Gashu et al., (2021)](https://doi.org/10.1038/s41586-021-03559-3). A data descriptor article provides additional information and some of the raw data downloads at: [Kumssa et al., (2022) ](https://www.nature.com/articles/s41597-022-01500-5). The notebook itself is maintained on GitHub ([here]()).
+This notebook examines spatial prediction problems associated with mineral nutrient deficiency risks using cereal grain data from Ethiopia and Malawi. The data we will be using were generated by the [GeoNutrition Project](http://www.geonutrition.com). The nationally representative cropland sampling frames and the laboratory methods that were used in the data collections are fully described in [Gashu et al., (2021)](https://doi.org/10.1038/s41586-021-03559-3). A data descriptor article provides additional information and the raw data downloads at: [Kumssa et al., (2022) ](https://www.nature.com/articles/s41597-022-01500-5). The notebook itself is maintained on GitHub ([here](https://github.com/mgwalsh/GeoNutrition/blob/main/Spatial_preds_crop_ionomes.Rmd)). Feel free to alter and use it as you see fit, but also please cite it when you do so. It is copyrighted as [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
 # Data setup
 
@@ -45,7 +45,7 @@ To actually run this notebook, you will need to load the packages indicated in t
 ```{r, results = 'hide'}
 # Package names
 packages <- c("tidyverse", "rgdal", "sp", "raster", "leaflet", "htmlwidgets", "DT", "compositions",
-              "archetypes", "doParallel", "caret", "caretEnsemble")
+              "doParallel", "caret", "caretEnsemble")
 
 # Install packages
 installed_packages <- packages %in% rownames(installed.packages())
@@ -57,7 +57,7 @@ if (any(installed_packages == FALSE)) {
 invisible(lapply(packages, library, character.only = TRUE))
 ```
 
-The primary data used in this notebook include *Inductively Coupled Plasma Mass Spectrometry* ([ICP-MS](https://en.wikipedia.org/wiki/Inductively_coupled_plasma_mass_spectrometry)) mineral nutrient concentration measurements of cereal grain samples (in mg kg^-1^), including: Na, Mg, P, K, Ca, V, Cr, Mn, Fe, Co, Cu, Zn, Se, Mo. They also include the georeference of where the samples were collected (lon/lat, EPSG:3857), the cereal crop that was sampled at that location, and the source of the grain samples (from the standing crop, a field stack or a closely located grain store). You can download the data to your working directory from our OSF repository [here](). They also include the gridded spatial variables we shall using for predictive modeling (see their description and raw data links in the table below). 
+The primary data used in this notebook include *Inductively Coupled Plasma Mass Spectrometry* ([ICP-MS](https://en.wikipedia.org/wiki/Inductively_coupled_plasma_mass_spectrometry)) mineral nutrient concentration measurements of cereal grain samples (in mg kg^-1^), including: Na, Mg, P, K, Ca, V, Cr, Mn, Fe, Co, Cu, Zn, Se, Mo. They also include the georeference of where the samples were collected (lon/lat, EPSG:3857), the cereal crop that was sampled at that location, and the source of the grain samples (i.e., from the standing crop, a field stack or a closely located grain store). They also include the gridded spatial variables we shall using for predictive modeling (see their description and raw data links in the table below).
 
 <br>
 ```{r, echo = FALSE}
@@ -66,7 +66,7 @@ datatable(vars)
 ```
 
 <br>
-The next chunks then load and merge the GeoNutrition data with the spatial (gridded) features.
+You can download all of the data needed to run this notebook from our [GeoNutrition](https://osf.io/47t3u/) OSF repository using the following links: [`MW_ET_grain_ICP.csv`](https://osf.io/cjfbs), [`ET_grids_250m.zip`](https://osf.io/827eb) and [`MW_grids_250m.zip`](https://osf.io/fvzh3). Place the 3 files into your working directory. Note that the `ET_grids_250.zip` download is quite large (> 1 Gb), and may take a bit of time depending on your connection. The next chunks load and merge the GeoNutrition data with the spatial (gridded) features.
 
 ```{r}
 icpdat <- read.table("MW_ET_grain_ICP.csv", header=T, sep=",") ## ICP-MS data for ET & MW
@@ -94,7 +94,7 @@ et_grid <- extract(et_gri, et_icp)
 et_icp <- as.data.frame(cbind(et_icp, et_grid))
 ```
 
-The same procedure is applied to the Malawi GeoNutrition data.
+Apply the same procedure to the Malawi GeoNutrition data.
 
 ```{r}
 mw_icp <- icpdat[which(icpdat$survey == 'MW'), ]
@@ -205,6 +205,8 @@ boxplot(coda$Mo ~ coda$crop, notch = T, ylab = "Mo", xlab = "", cex.axis = 1, ce
 ```
 
 ## Compositional main effects regressions
+
+We run a compositional main effects regression (see [van den Boogaart and Tolosana-Delgado, 2013](https://link.springer.com/book/10.1007/978-3-642-36809-7)) using maize as the control crop. This quantifies the average ionomic differences (and variances) between crop species that are shown in Fig. 3.
 
 ```{r}
 icpdat$crop <- factor(icpdat$crop, levels=c('maiz','sorg','pmil','fmil','teff','rice','whea','barl','trit'))
@@ -334,18 +336,18 @@ stopCluster(mc)
 fname <- paste("./Results/", labs, "_en.rds", sep = "")
 saveRDS(en, fname)
 
-# Write out ensemble-learner prediction grid
-unlink("./Results/*.xml")
+# Write out the ensemble-learner prediction grids
 et_fname <- paste("./Results/", labs, "_ET_ens.tif", sep = "")
 writeRaster(et_en_pred, filename=et_fname, datatype="FLT4S", overwrite=T)
 mw_fname <- paste("./Results/", labs, "_MW_ens.tif", sep = "")
 writeRaster(mw_en_pred, filename=mw_fname, datatype="FLT4S", overwrite=T)
+unlink("./Results/*.xml")
 ```
 
-To save time we have pre-trained all 14 base and ensemble learners we'll be using for the model validation steps below. This is a bit of hack. However, you can download and check all of the associated `.rds` model and `.gtif` files from our GeoNutrition OSF repository [here](https://osf.io/f4p8g). Figures 4 & 5 below, show the ensemble-learner spatial predictions (after applying a few GIS cosmetics in [GRASS](https://grass.osgeo.org/)) that will be used in the model testing section of this notebook. You can download, examine and reuse the pre-trained model objects and spatial predictions at https://osf.io/eyda2. Unzip and place those into your `Results` sub-directory to run section 4.3.
+To save time we have pre-trained all 14 base and ensemble learners we'll be using for the model validation steps below. This is a bit of hack. However, you can download and check all of the associated `.rds` model and `.gtif` files from OSF repository [here](https://osf.io/f4p8g). Figures 4 & 5 below, show the ensemble-learner spatial predictions (after applying a few GIS cosmetics in [GRASS](https://grass.osgeo.org/)) that will be used in the model testing section of this notebook. You can download, examine and reuse the pre-trained model objects and spatial predictions at https://osf.io/eyda2. Unzip and place those into your `Results` sub-directory to run section 4.3. You will need
 
 <br>
-```{r, echo=FALSE, fig.align="center", fig.cap="**Fig. 4**: Compositional mineral nutrient predictions for Malawi (on a centered log ratio scale). Note that the numbers run from red (low), to yellow, to green (high) and have been histogram equalized to emphasize patterns in the display.", out.width = '80%'}
+```{r, echo=FALSE, fig.align="center", fig.cap="**Fig. 4**: Compositional mineral nutrient predictions for Malawi (on a centered log ratio scale). Note that the numbers run from red (low), to yellow, to green (high) and have been histogram equalized to emphasize spatial patterns.", out.width = '80%'}
 
 knitr::include_graphics("MW_coda_maps.jpg")
 ```
@@ -357,6 +359,11 @@ knitr::include_graphics("ET_coda_maps.jpg")
 ```
 
 ## Ensemble learner testing
+
+```{r}
+
+```
+
 
 # Main takeaways
 
