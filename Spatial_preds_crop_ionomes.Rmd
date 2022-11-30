@@ -45,7 +45,7 @@ To actually run this notebook, you will need to load the packages indicated in t
 ```{r, results = 'hide'}
 # Package names
 packages <- c("tidyverse", "rgdal", "sp", "raster", "leaflet", "htmlwidgets", "DT", "compositions",
-              "doParallel", "caret", "caretEnsemble")
+              "doParallel", "caret", "caretEnsemble", "quantreg")
 
 # Install packages
 installed_packages <- packages %in% rownames(installed.packages())
@@ -57,7 +57,7 @@ if (any(installed_packages == FALSE)) {
 invisible(lapply(packages, library, character.only = TRUE))
 ```
 
-The primary data used in this notebook include *Inductively Coupled Plasma Mass Spectrometry* ([ICP-MS](https://en.wikipedia.org/wiki/Inductively_coupled_plasma_mass_spectrometry)) mineral nutrient concentration measurements of cereal grain samples (in mg kg^-1^), including: Na, Mg, P, K, Ca, V, Cr, Mn, Fe, Co, Cu, Zn, Se, Mo. They also include the georeference of where the samples were collected (lon/lat, EPSG:3857), the cereal crop that was sampled at that location, and the source of the grain samples (i.e., from the standing crop, a field stack or a closely located grain store). They also include the gridded spatial variables we shall using for predictive modeling (see their description and raw data links in the table below).
+The primary data used in this notebook include *Inductively Coupled Plasma Mass Spectrometry* ([ICP-MS](https://en.wikipedia.org/wiki/Inductively_coupled_plasma_mass_spectrometry)) mineral nutrient concentration measurements of cereal grain samples (in mg kg^-1^), including: Na, Mg, P, K, Ca, V, Cr, Mn, Fe, Co, Cu, Zn, Se, Mo. They also include the georeference of where the samples were collected (lon/lat, EPSG:3857), the cereal crop that was sampled at that location, and the source of the grain samples (i.e., from the standing crop, a field stack or a closely located grain store). They also include the gridded spatial variables we shall be using for predictive modeling (see their description and raw data links in the table below).
 
 <br>
 ```{r, echo = FALSE}
@@ -204,9 +204,9 @@ boxplot(coda$Se ~ coda$crop, notch = T, ylab = "Se", xlab = "", cex.axis = 1, ce
 boxplot(coda$Mo ~ coda$crop, notch = T, ylab = "Mo", xlab = "", cex.axis = 1, cex.lab = 1.3, las = 2)
 ```
 
-## Ionomic differences between crop species
+## Ionomic profiles of cereal crops
 
-We run a compositional main effects regression ([van den Boogaart and Tolosana-Delgado, 2013](https://link.springer.com/book/10.1007/978-3-642-36809-7)) using maize as the control crop. This quantifies the average ionomic differences (and variances) between crop species that are shown in Fig. 3 and can be used as a baseline for the spatial models that are presented in section 4.
+We run a compositional main effects regression ([van den Boogaart and Tolosana-Delgado, 2013](https://link.springer.com/book/10.1007/978-3-642-36809-7)) using maize as the control crop. This quantifies the average ionomic differences between crop species (and their variability) that are shown in Fig. 3 and can be used as a baseline for the spatial models that are presented in section 4.
 
 ```{r}
 icpdat$crop <- factor(icpdat$crop, levels=c('maiz','sorg','pmil','fmil','teff','rice','whea','barl','trit'))
@@ -344,7 +344,7 @@ writeRaster(mw_en_pred, filename=mw_fname, datatype="FLT4S", overwrite=T)
 unlink("./Results/*.xml")
 ```
 
-To save time we have pre-trained all 14 base and ensemble learners we'll be using for the model validation steps below. This is a bit of hack. However, you can download and check all of the associated `.rds` model and `.gtif` files from OSF repository [here](https://osf.io/f4p8g). Figures 4 & 5 below, show the ensemble-learner spatial predictions (after applying a few GIS cosmetics in [GRASS](https://grass.osgeo.org/)) that will be used in the model testing section of this notebook. You can download, examine and reuse the pre-trained model objects and spatial predictions at https://osf.io/eyda2. Unzip and place those into your `Results` sub-directory to run section 4.3. You will need
+To save time we have pre-trained all 14 base and ensemble learners we'll be using for the model testing steps below. This is a bit of hack. However, you can download and check all of the associated `.rds` model and `.gtif` files from OSF repository [here](https://osf.io/f4p8g). Figures 4 & 5 below, show the ensemble-learner spatial predictions (after applying a few GIS cosmetics in [GRASS](https://grass.osgeo.org/)) that will be used in the model testing section of this notebook. You can download, examine and reuse the pre-trained model objects and spatial predictions at https://osf.io/eyda2. Unzip and place those into your `Results` sub-directory to run section 4.3.
 
 <br>
 ```{r, echo=FALSE, fig.align="center", fig.cap="**Fig. 4**: Compositional mineral nutrient predictions for Malawi (on a centered log ratio scale). Note that the numbers run from red (low), to yellow, to green (high) and have been histogram equalized to emphasize spatial patterns.", out.width = '80%'}
@@ -358,14 +358,16 @@ knitr::include_graphics("MW_coda_maps.jpg")
 knitr::include_graphics("ET_coda_maps.jpg")
 ```
 
-## Ensemble learner tests
+## Ensemble learner uncertainty estimates
+
+Note that the models that have been developed have not seen any of the test-set (evaluation) data up to this point. The next chunks provide robust uncertainty estimates for the ensemble learner predictions on the test-set data using quantile regression ([`quantreg`](https://cran.r-project.org/web/packages/quantreg/quantreg.pdf)). To run these chunks you will initially need to download the associated prediction rasters ([`ET_ens_gtif.zip`](https://osf.io/jc6vs) and [`MW_ens_gtif.zip`](https://osf.io/k6ce5)) and then unzip those to your `./Results` sub-directory.
 
 ```{r}
 # Stack Ethiopia prediction grids
 et_lis <- list.files(path="./Results", pattern="ET_ens.tif", full.names = T)
 et_ens <- stack(et_lis)
-names(et_ens) <- c("Ca_ens","Co_ens","Cr_ens","Cu_ens","Fe_ens","K_ens","Mg_ens","Mn_ens","Mo_ens","Na_ens",
-                   "P_ens","Se_ens","V_ens","Zn_ens")
+names(et_ens) <- c("pCa","pCo","pCr","pCu","pFe","pK","pMg","pMn","pMo","pNa","pP",
+                   "pSe","pV","pZn")
 
 # Extract ensemble predictions at the Ethiopia testing locations
 et_val <- gn_val[which(gn_val$survey == 'ET'), ]
@@ -377,8 +379,8 @@ et_val <- as.data.frame(cbind(et_val, et_ens))
 # Stack Malawi ensemble prediction grids
 mw_lis <- list.files(path="./Results", pattern="MW_ens.tif", full.names = T)
 mw_ens <- stack(mw_lis)
-names(mw_ens) <- c("Ca_ens","Co_ens","Cr_ens","Cu_ens","Fe_ens","K_ens","Mg_ens","Mn_ens","Mo_ens","Na_ens",
-                   "P_ens","Se_ens","V_ens","Zn_ens")
+names(mw_ens) <- c("pCa","pCo","pCr","pCu","pFe","pK","pMg","pMn","pMo","pNa","pP",
+                   "pSe","pV","pZn")
 
 # Extract ensemble predictions at the Malawi testing locations
 mw_val <- gn_val[which(gn_val$survey == 'MW'), ]
@@ -389,7 +391,95 @@ mw_val <- as.data.frame(cbind(mw_val, mw_ens))
 
 # Row bind the Ethiopia and Malawi data frames
 gn_val <- rbind(et_val, mw_val)
+# glimpse(gn_val)
 ```
+
+```{r, results = 'hide'}
+# Quantile regression test-set fits
+qNa <- rq(Na~pNa, tau=c(0.05,0.5,0.95), data = gn_val)
+qMg <- rq(Mg~pMg, tau=c(0.05,0.5,0.95), data = gn_val)
+qP <- rq(P~pP, tau=c(0.05,0.5,0.95), data = gn_val)
+qK <- rq(K~pK, tau=c(0.05,0.5,0.95), data = gn_val)
+qCa <- rq(Ca~pCa, tau=c(0.05,0.5,0.95), data = gn_val)
+qV <- rq(V~pV, tau=c(0.05,0.5,0.95), data = gn_val)
+qCr <- rq(Cr~pCr, tau=c(0.05,0.5,0.95), data = gn_val)
+qMn <- rq(Mn~pMn, tau=c(0.05,0.5,0.95), data = gn_val)
+qFe <- rq(Fe~pFe, tau=c(0.05,0.5,0.95), data = gn_val)
+qCo <- rq(Co~pCo, tau=c(0.05,0.5,0.95), data = gn_val)
+qCu <- rq(Cu~pCu, tau=c(0.05,0.5,0.95), data = gn_val)
+qZn <- rq(Zn~pZn, tau=c(0.05,0.5,0.95), data = gn_val)
+qSe <- rq(Se~pSe, tau=c(0.05,0.5,0.95), data = gn_val)
+qMo <- rq(Mo~pMo, tau=c(0.05,0.5,0.95), data = gn_val)
+```
+
+```{r, echo = F, fig.align = "center", fig.show = 'hold', fig.height = 12, fig.cap = "**Fig. 6**: Quantile regression plots of predicted vs measured test-set values (on a centered log ratio scale). The red lines are estimated at the median, the blue lines are estimated at the 5% and 95% quantiles."}
+
+colors <- c("dodger blue", "tomato", "dodger blue")
+par(mfrow = c(5,3), pty = "s", mar=c(2,4,1,1))
+
+plot(Na ~ pNa, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qNa$coefficients)) {
+    abline(coef(qNa)[, j], col = colors[j], lwd = 2)}
+
+plot(Mg ~ pMg, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qMg$coefficients)) {
+    abline(coef(qMg)[, j], col = colors[j], lwd = 2)}
+
+plot(P ~ pP, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qP$coefficients)) {
+    abline(coef(qP)[, j], col = colors[j], lwd = 2)}
+
+plot(K ~ pK, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qK$coefficients)) {
+    abline(coef(qK)[, j], col = colors[j], lwd = 2)}
+
+plot(Ca ~ pCa, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qCa$coefficients)) {
+    abline(coef(qCa)[, j], col = colors[j], lwd = 2)}
+
+plot(V ~ pV, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qV$coefficients)) {
+    abline(coef(qV)[, j], col = colors[j], lwd = 2)}
+
+plot(Cr ~ pCr, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qCr$coefficients)) {
+    abline(coef(qCr)[, j], col = colors[j], lwd = 2)}
+
+plot(Mn ~ pMn, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qMn$coefficients)) {
+    abline(coef(qMn)[, j], col = colors[j], lwd = 2)}
+
+plot(Fe ~ pFe, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qFe$coefficients)) {
+    abline(coef(qFe)[, j], col = colors[j], lwd = 2)}
+
+plot(Co ~ pCo, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qCo$coefficients)) {
+    abline(coef(qCo)[, j], col = colors[j], lwd = 2)}
+
+plot(Cu ~ pCu, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qCu$coefficients)) {
+    abline(coef(qCu)[, j], col = colors[j], lwd = 2)}
+
+plot(Zn ~ pZn, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qZn$coefficients)) {
+    abline(coef(qZn)[, j], col = colors[j], lwd = 2)}
+
+plot(Se ~ pSe, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qSe$coefficients)) {
+    abline(coef(qSe)[, j], col = colors[j], lwd = 2)}
+
+plot(Mo ~ pMo, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qMo$coefficients)) {
+    abline(coef(qMo)[, j], col = colors[j], lwd = 2)}
+```
+
+# Compositional regression
+
+```{r}
+
+```
+
 
 
 # Main takeaways
