@@ -1,7 +1,7 @@
 ---
 title: Spatial predictions of cereal grain ionomes from Ethiopia and Malawi
-author: M.G. Walsh, A.M. Sila, D.B. Kumssa, A.R. Mossa, T. Amede, P.C. Nalivata, D. Gashu, S. Gameda, R.M. Lark, E.J.M. Joy, E.H. Bailey, S.M. Haefele, M.R. Broadley, B.A. Walsh, R. Rodríguez Iglesias, J. Chamberlin and S. Snapp
-date: "`r format(Sys.time(), '%d, %B, %Y')`"
+author: M.G. Walsh, A.M. Sila, D.B. Kumssa, A.R. Mossa, T. Amede, P.C. Nalivata, D. Gashu, S.M. Haefele, S. Gameda, M.R. Broadley, E.J.M. Joy, E.H. Bailey, R.M. Lark, B.A. Walsh, R. Rodríguez Iglesias, J. Chamberlin and S. Snapp
+date: `r format(Sys.time(), '%d, %B, %Y')`
 output:
   html_document:
     toc: true
