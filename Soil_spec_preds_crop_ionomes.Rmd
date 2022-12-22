@@ -1,6 +1,6 @@
 ---
-title: Soil spectral predictions of cereal grain ionome archetypes from Malawi
-author: M.G. Walsh, A.M. Sila, D.B. Kumssa, A.R. Mossa, T. Amede, P.C. Nalivata, D. Gashu, S.M. Haefele, S. Gameda, M.R. Broadley, E.J.M. Joy, E.H. Bailey, R.M. Lark, B.A. Walsh, R. Rodríguez Iglesias, J. Chamberlin and S. Snapp
+title: Soil spectral predictions of cereal grain ionomes from Malawi
+author: A.M. Sila, M.G. Walsh, D.B. Kumssa, A.R. Mossa, T. Amede, P.C. Nalivata, D. Gashu, S.M. Haefele, S. Gameda, M.R. Broadley, E.J.M. Joy, E.H. Bailey, R.M. Lark, B.A. Walsh, R. Rodríguez Iglesias, J. Chamberlin and S. Snapp
 date: "`r format(Sys.time(), '%d, %B, %Y')`"
 output:
   html_document:
@@ -18,13 +18,13 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 
 # Introduction
 
-Micronutrients i.e., the essential vitamins and minerals, are important for child development as well as for the prevention of morbidity and disease in adults. Except for vitamin D, micronutrients are not produced in the body and must be obtained from the diet. Although people only need small amounts of micronutrients, consuming the recommended amounts is important as micronutrient deficiencies (MNDs) can have serious consequences on both health and well-being. "*Effective MND surveillance is essential to inform policy responses to current food system challenges and socioeconomic and environmental drivers of change. Potential food system interventions to alleviate MNDs, such as food fortification and biofortification through breeding crops with increased micronutrient concentrations in their edible portions, should consider subnational geographical effects, which can be larger in magnitude than planned intervention outcomes*" ([Gashu et al., 2020](https://www.nature.com/articles/s41586-021-03559-3)).
+Micronutrients i.e., the essential vitamins and minerals, are important for child development as well as for the prevention of morbidity and disease in adults. Except for vitamin D, micronutrients are not produced in the body and must be obtained from the diet. Although people only need small amounts of micronutrients, consuming the [recommended daily amounts](https://www.fda.gov/food/new-nutrition-facts-label/daily-value-new-nutrition-and-supplement-facts-labels) is important as micronutrient deficiencies (MNDs) can have serious consequences on both health and well-being. "*Effective MND surveillance is essential to inform policy responses to current food system challenges and socioeconomic and environmental drivers of change. Potential food system interventions to alleviate MNDs, such as food fortification and biofortification through breeding crops with increased micronutrient concentrations in their edible portions, should consider subnational geographical effects, which can be larger in magnitude than planned intervention outcomes*" ([Gashu et al., 2020](https://www.nature.com/articles/s41586-021-03559-3)).
 
 However, national surveys containing staple crop micronutrient data are not routinely collected in most developing countries because they are expensive, time-consuming, and limited to the annual harvest season(s), both in the field and the laboratory. Also, the databases that are needed to analyze dietary micronutrient supplies against demands should be georeferenced to be effective, but coordinates and time stamps are often either only roughly linked to sampled administrative or project regions or are completely absent in Africa. Similarly, agronomic interventions that focus on plant micronutrients for improving cropland and livestock productivity are inadequately supported by spatial and temporal data because the distributions of different staple crops and livestock are usually not known and are not regularly monitored at national scales.
 
-Spectral signatures of soils, plants, animal tissues, and materials generally are defined by their reflectance or absorbance as a function of wavelength in the electromagnetic spectrum. Under laboratory conditions, the signatures result from electronic transitions of atoms and vibrational stretching and bending of structural groups of atoms that form molecules or crystals. Spectroscopy has been shown to provide highly repeatable, rapid, and low-cost measurements of different soil, plant, and animal tissue properties in numerous studies. The amount of light absorbed by a solid sample can be measured with minimal sample preparation (primarily drying and grinding) across a wide range of ultra-violet (UV), visible (VIS), near (NIR), and mid-infrared (MIR) wavelengths to provide a unique spectral signature of soil, plant or animal samples. An individual measurement can be performed in about 20 seconds, in contrast to more conventional soil and plant tests, which are typically slow, labor-intensive, expensive, and/or use hazardous chemicals, which have to be handled carefully by laboratories.
+Spectral signatures of soils, plants, animal tissues, and materials generally are defined by their reflectance or absorbance as a function of wavelength in the electromagnetic spectrum. Under laboratory conditions, the signatures result from electronic transitions of atoms and vibrational stretching and bending of structural groups of atoms that form molecules or crystals. Spectroscopy has been shown to provide highly repeatable, rapid, and low-cost measurements of different soil, plant, and animal tissue properties in numerous studies. The amount of light absorbed by a rock, soil, plant or animal tissue sample can be measured with minimal sample preparation (primarily drying and grinding) across a wide range of ultra-violet (UV), visible (VIS), near (NIR), and mid-infrared (MIR) wavelengths to provide a unique spectral signature. An individual measurement can be performed in about 20 seconds, in stark contrast to more conventional soil and plant tests, which are typically slow, labor-intensive, expensive, and/or use hazardous chemicals, which have to be handled carefully by laboratories.
 
-This notebook examines spectral predictions associated with mineral nutrient deficiency risks for humans using cereal grain data from Malawi. It is intended to be a companion to a spatial prediction workflow, which can be downloaded [here](). The data we will be using were generated by the [GeoNutrition Project](http://www.geonutrition.com). Nationally representative cropland sampling frames and the laboratory methods that were used in the data collections are well described in [Gashu et al., (2021)](https://doi.org/10.1038/s41586-021-03559-3). An overall data descriptor article provides additional information and some of the raw data downloads at: [Kumssa et al., (2022) ](https://www.nature.com/articles/s41597-022-01500-5). The notebook itself is maintained on GitHub ([here](https://github.com/mgwalsh/GeoNutrition/blob/main/Soil_spec_preds_crop_ionomes.Rmd)). Feel free to alter and use it as you see fit, but also please cite it when you do so. It is copyrighted as [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+This notebook examines the possibility for using MIR-based spectral predictions of mineral nutrient deficiency risks for humans using cereal grain data from Malawi. It is intended to be a companion to a similar spatial prediction workflow; the most recent version of which can be downloaded [here](https://osf.io/7xzqv). The data we will be using were generated by the [GeoNutrition Project](http://www.geonutrition.com). Nationally representative cropland sampling frames and the laboratory methods that were used in the data collections are well described in [Gashu et al., (2021)](https://doi.org/10.1038/s41586-021-03559-3). An overall data descriptor article provides additional information and some of the raw data downloads at: [Kumssa et al., (2022) ](https://www.nature.com/articles/s41597-022-01500-5). This notebook is maintained on GitHub ([here](https://github.com/mgwalsh/GeoNutrition/blob/main/Soil_spec_preds_crop_ionomes.Rmd)). Feel free to alter and use it as you see fit, but also please cite it when you do so. It is copyrighted as [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
 # Data setup
 
@@ -32,8 +32,8 @@ To actually run this notebook, you will need to load the packages indicated in t
 
 ```{r, results = 'hide'}
 # Package names
-packages <- c("tidyverse", "rgdal", "leaflet", "htmlwidgets", "DT", "compositions", "archetypes",
-              "doParallel", "caret", "caretEnsemble", "quantreg")
+packages <- c("tidyverse", "rgdal", "leaflet", "htmlwidgets", "DT", "compositions", "doParallel",
+              "caret", "caretEnsemble", "quantreg")
 
 # Install packages
 installed_packages <- packages %in% rownames(installed.packages())
@@ -45,87 +45,345 @@ if (any(installed_packages == FALSE)) {
 invisible(lapply(packages, library, character.only = TRUE))
 ```
 
-The primary ionomic labels used in this notebook include *Inductively Coupled Plasma Mass Spectrometry* ([ICP-MS](https://en.wikipedia.org/wiki/Inductively_coupled_plasma_mass_spectrometry)) nutrient concentration measurements of cereal grain samples (in mg kg^-1^), including: Na, Mg, P, S, K, Ca, Cr, Mn, Fe, Co, Cu, Zn, Se, Mo, and I. They also include the georeference of where the samples were collected (lon/lat, EPSG:3857), the cereal crop that was sampled at that location, and the provenance of the grain samples (i.e., from the standing crop, a field stack or a closely located grain store). Note that any crop nutrient measurements below their respective limits of detection have been set to 2/3 of the respective minimum observed values. You can download the file from our OSF repository using the following link: [`MWI_grain_CoDa.csv`](https://osf.io/zj5b7).
+## Downloads
 
-The associated soil samples were air-dried and then finely ground to powder (<100 microns) using an agate sample mill. The samples were then loaded into aluminum microtiter plates (A752-96, Bruker Optics, Karlsruhe) using a micro spatula to fill the 6-mm diameter wells and leveled. Samples were loaded into four replicate wells, each scanned 32 times in MIR reflectance mode using a Bruker Tensor 27 MIR spectrometer with a high throughput screening arm and a liquid nitrogen cooled HgCdTe detector. The spectra obtained for each sample were then transferred to a desktop computer where they were averaged and combined into a single flat dataframe. You can download the spectral feature file from our OSF repository via this link [`MWI_soil_mir_spectra.csv`](https://osf.io/w5ng6). Ensure that you place both those files into your designated working directory.
+The primary ionomic labels used in this notebook include *Inductively Coupled Plasma Mass Spectrometry* ([ICP-MS](https://en.wikipedia.org/wiki/Inductively_coupled_plasma_mass_spectrometry)) nutrient concentration measurements of cereal grain samples (in mg kg^-1^), including: Na, Mg, P, S, K, Ca, Cr, Mn, Fe, Co, Cu, Zn, Se, Mo, and I. They also include the georeference of where the samples were collected (lon/lat, EPSG:3857), the cereal crop that was sampled at that location, farmer reported fertilizer use (no, unknown, yes) and the provenance of the grain samples (i.e., from the standing crop, a field stack or a closely located grain store). Note that any crop nutrient measurements below their respective limits of detection were set to 2/3 of the respective minimum observed values. You can download the file from our OSF repository using the following link: [`MWI_grain_CoDa.csv`](https://osf.io/zj5b7).
 
-The next chunk [closes](https://econ-papers.upf.edu/papers/1554.pdf) the CoDa and calculates *centered log ratios* ([clr](https://www.rdocumentation.org/packages/compositions/versions/2.0-1/topics/clr)). These can be analyzed, summarized, and interpreted with conventional univariate, multivariate, data and machine learning modeling methods ([Greenacre, 2021](https://www.annualreviews.org/doi/pdf/10.1146/annurev-statistics-042720-124436)). Note that you could also use other log ratios such as the [alr](https://www.rdocumentation.org/packages/compositions/versions/2.0-1/topics/alr), or the [ilr](https://www.rdocumentation.org/packages/compositions/versions/2.0-1/topics/ilr), but we shall leave those possibilities for you to explore.
+The associated soil samples were air-dried and then finely ground to powder (<100 microns) using an agate sample mill. The samples were then loaded into aluminum microtiter plates (Bruker Optics, A752-96) using a micro spatula to fill the 6-mm diameter wells and leveled. Samples were loaded into four replicate wells, each scanned 32 times in MIR reflectance mode using a Bruker Tensor 27 MIR spectrometer with a high throughput screening arm and a liquid nitrogen cooled HgCdTe detector. The spectra obtained for each sample were then averaged and combined into a single flat dataframe. You can download the spectral feature file from our OSF repository via this link [`MWI_soil_mir_spectra.csv`](https://osf.io/w5ng6). Ensure that you place both those files into your designated working directory. The next chunk loads the ICP-MS data, and flags the respective limits of detection for reference.
 
 ```{r}
 # Read the ICP-MS crop data
 cpdat <- read.table("MWI_grain_CoDa.csv", header=T, sep=",")
 
-# Calculate the CLRs
+# Detection limit tags (for reference)
+cpdat$dNa <- ifelse(cpdat$Na > min(cpdat$Na), 1, 0)
+cpdat$dMg <- ifelse(cpdat$Mg > min(cpdat$Mg), 1, 0)
+cpdat$dP <- ifelse(cpdat$P > min(cpdat$P), 1, 0)
+cpdat$dS <- ifelse(cpdat$S > min(cpdat$S), 1, 0)
+cpdat$dK <- ifelse(cpdat$K > min(cpdat$K), 1, 0)
+cpdat$dCa <- ifelse(cpdat$Ca > min(cpdat$Ca), 1, 0)
+cpdat$dCr <- ifelse(cpdat$Cr > min(cpdat$Cr), 1, 0)
+cpdat$dMn <- ifelse(cpdat$Mn > min(cpdat$Mn), 1, 0)
+cpdat$dFe <- ifelse(cpdat$Fe > min(cpdat$Fe), 1, 0)
+cpdat$dCo <- ifelse(cpdat$Co > min(cpdat$Co), 1, 0)
+cpdat$dCu <- ifelse(cpdat$Cu > min(cpdat$Cu), 1, 0)
+cpdat$dZn <- ifelse(cpdat$Zn > min(cpdat$Zn), 1, 0)
+cpdat$dSe <- ifelse(cpdat$Se > min(cpdat$Se), 1, 0)
+cpdat$dMo <- ifelse(cpdat$Mo > min(cpdat$Mo), 1, 0)
+cpdat$dI <- ifelse(cpdat$I > min(cpdat$I), 1, 0)
+
+# Count of the number of detectable nutrients ... out of 15
+cpdat$dlim <- rowSums(cpdat[, 23:37])
+```
+
+```{r, echo = F, fig.align = "center", fig.cap = "**Fig. 1**: Cumulative distribution of the number of detectable nutrient elements per grain sample."}
+
+par(pty="s", mar=c(4,4,1,1))
+plot(ecdf(cpdat$dlim), main="", xlab="No. of detectable elements", ylab="ECDF", xlim=c(8, 15),
+     verticals=T, lty=1, lwd=2, cex.lab=1.3, col="tomato", do.points=F)
+abline(0.5,0, lty=1, col="grey")
+```
+
+## Initial compositional model
+
+We run a compositional main effects regression (see: [van den Boogaart and Tolosana-Delgado, 2013](https://link.springer.com/book/10.1007/978-3-642-36809-7)) using maize as the designated control crop, and the detectable number of elements (`dlim`, see Fig. 1) in the recorded ICP-MS grain measurements. This quantifies the average ionomic differences between crop species conditioned on fertilizer use (no, unknown, yes) and the number of detectable elements, which can be used as a baseline for the spectral models that are presented in the subsequent sections. Section ?? augments this initially simple model with spectral predictions.
+
+```{r}
+y = acomp(cpdat[,8:22])
+crop <- cpdat$crop
+fert <- cpdat$fert
+dlim <- cpdat$dlim
+
+# Fit compositional base model
+(base.lm <- lm(clr(y) ~ crop + fert + dlim))
+```
+
+The next chunk transforms the model coefficients back to the original compositional scale. 
+
+```{r}
+(coefs <- clrInv(coef(base.lm), orig=y))
+```
+
+## Spectral feature pre-processing
+
+To speed up processing of spectral features for machine learning, it is common to initially to reduce the dimensionality and collinearity of the (spectral) data with methods including: [Principal components analysis (PCA)](https://en.wikipedia.org/wiki/Principal_component_analysis), [Independent components analysis (ICA)](https://en.wikipedia.org/wiki/Independent_component_analysis) as well as other signal processing techniques such as [Non-negative matrix factorization (NMF)](https://en.wikipedia.org/wiki/Non-negative_matrix_factorization) and [wavelet compression](https://en.wikipedia.org/wiki/Wavelet_transform), among others. We use PCA here; however, feel to experiment. The next chunk appends the resulting principal component scores to the grain ICP-MS data frame.
+
+```{r, results = 'hide'}
+# Load the spectral data
+spdat <- read.table("MWI_soil_mir_spectra.csv", header=T, sep=",")
+spdat <- na.omit(spdat) ## includes only complete cases
+
+# Soil spectral principal components
+spdat.pca <- prcomp(spdat[ ,2:3577], center=T, scale=T) ## centered and scaled soil spectral PCAs
+spca <- predict(spdat.pca, spdat)
+spca <- spca[ ,1:10] ## save the first 10 components, which explain >95% of the total soil MIR variability
+ssid <- spdat["ssid"]
+spca <- as.data.frame(cbind(ssid, spca))
+
+# Save PCA model for reuse
+fname <- paste("./MW_coda/", "MW", "_spec_pca.rds", sep = "")
+saveRDS(spdat.pca, fname) ## saves soil spectral PCA model
+
+# Merge crop and soil spectral (pca) files
+cpdat <- merge(cpdat, spca, by="ssid")
+```
+
+# Spectral predictions
+
+## Training / testing setup
+
+We initially set a 90/10% training and testing partition. The function `createDataPartition` in the [`caret`](https://topepo.github.io/caret/index.html) package can be used to generate balanced splits of the data. We partition on the number of detected elements variable (`dlim`) here.
+
+```{r}
+# Calculate the centered log ratios
 varc <- c("Na", "Mg", "P", "S", "K", "Ca", "Cr", "Mn", "Fe", "Co", "Cu", "Zn", "Se", "Mo", "I")
 comps <- cpdat[varc]
 comps <- comps / rowSums(comps) ## close the composition
-comps <- as.data.frame(clr(comps)) ## centered log ratio (clr) transforms
+comps <- as.data.frame(clr(comps)) ## centered log ratio (clr) transform
 
-# Attach site data info
-locv <- c("csid", "ssid", "lat", "lon", "crop") 
+# Attach survey and spectral data
+locv <- c("ssid", "crop", "dlim", "PC1", "PC2", "PC3", "PC4", "PC5", "PC6", "PC7", "PC8", "PC9", "PC10") 
 locs <- cpdat[locv]
-codat <- cbind(locs, comps)
+coda <- cbind(locs, comps)
+coda <- na.omit(coda) ## includes only complete cases
+
+# Set calibration/validation set randomization seed
+seed <- 12358
+set.seed(seed)
+coda <- coda[sample(1:nrow(coda)), ] # randomize observations
+
+# Split data into training and test sets
+gnIndex <- createDataPartition(coda$dlim, p = 9/10, list = F, times = 1)
+gn_cal <- coda[ gnIndex,]
+gn_val <- coda[-gnIndex,]
 ```
 
-# Compositional archetypes and unsupervised CoDa classification
+## Base-learner training
 
-*Archetypal analysis* ([Cutler and Breiman, 1994](https://www.stat.cmu.edu/technometrics/90-00/vol-36-04/v3604338.pdf)) is an unsupervised learning method similar to e.g., [K-means clustering](https://towardsdatascience.com/k-means-clustering-explained-4528df86a120). It describes each observation in a dataset as a mixture of archetypes. Rather than describing average or typical observations and measurements, archetypal analysis seeks to identify extreme points on the [convex hull](https://en.wikipedia.org/wiki/Convex_hull) of a data matrix, which can provide a simple and quite useful way of clustering and looking at multivariate data ([Eugster and Leisch, 2009](https://cran.r-project.org/web//packages/archetypes/vignettes/archetypes.pdf)). The identified archetypes themselves are mixtures of the individual CoDA variables under consideration. Archetypal mixture coefficients and projections are also CoDa, which is why we include them in this notebook. Note that other clustering and ordination algorithms could also be used in this context ([Greenacre, 2021](https://www.annualreviews.org/doi/pdf/10.1146/annurev-statistics-042720-124436)).
+This chunk fits 3 base-learner models (one bagging, one boosting, one rule-based), which uses the spectral training data with repeated 10-fold cross-validation. You can learn more about how these algorithms work by looking at the following links: [randomForest](https://www.rdocumentation.org/packages/randomForest/versions/4.6-14/topics/randomForest) and [gbm](https://www.rdocumentation.org/packages/gbm/versions/2.1.8.1). Change these as you see fit. There are about 160 different algorithms available via the [`caret`](https://www.rdocumentation.org/packages/caret/versions/6.0-93) and [`caretEnsemble`](https://www.rdocumentation.org/packages/caretEnsemble/versions/2.0.1) packages. We only demonstrate the fitting process here using compositional values for phosphorus, but you can run the code on any of the other nutrients by switching to the other labels in the places indicated in the code.  
 
-## Identifying archetypes
+```{r, warning = FALSE, results='hide'}
+# Calibration labels
+labs <- c("P") ## **insert other labels here** 
+lcal <- as.vector(t(gn_cal[labs]))
 
-This next chunk fits the Malawi CLR data using the [`archetypes`](https://cran.r-project.org/web//packages/archetypes/vignettes/archetypes.pdf) package, which is a robust implementation of the original Cutler and Breiman (1994) algorithm that uses [k-fold validation](https://www.statology.org/k-fold-cross-validation/).
+# Spectral calibration features
+fcal <- gn_cal[ ,c(3:13)]
 
-```{r, output = 'hide'}
-# Fit nutrient archetypes with 10-fold cross validation
-set.seed(85321)
-comp.arc <- stepArchetypes(data=codat[,6:20], k = 1:10, nrep = 10, verbose = FALSE)
+# Start doParallel to parallelize model fitting
+set.seed(seed)
+mc <- makeCluster(detectCores())
+registerDoParallel(mc)
+
+# Specify model training controls
+tc <- trainControl(method="repeatedcv", number=10, repeats=3, allowParallel = TRUE, savePredictions="final")
+
+# Fit 3 base-learners using the specified ionomic labels
+blist <- caretList(fcal, lcal,
+                   trControl = tc,
+                   tuneList = NULL,
+                   methodList = c("rf", "gbm", "cubist"),
+                   preProcess = c("center","scale"),
+                   metric = "RMSE")
+
+stopCluster(mc)
+fname <- paste("./MW_coda/", labs, "_blist.rds", sep = "")
+saveRDS(blist, fname)
+
+# Generate predictions (**change the labels manually here**)
+gn_cal$P_rf <- predict(blist$rf, gn_cal)
+gn_cal$P_gb <- predict(blist$gbm, gn_cal)
+gn_cal$P_cu <- predict(blist$cubist, gn_cal)
+
+# Same for the test-set
+gn_val$P_rf <- predict(blist$rf, gn_val)
+gn_val$P_gb <- predict(blist$gbm, gn_val)
+gn_val$P_cu <- predict(blist$cubist, gn_val)
 ```
 
-```{r, echo = FALSE, fig.align = "center", fig.height = 4, fig.width = 4, fig.cap = "**Fig. 1**: Archetype scree-plot showing the number of archetypes versus the multivariate residual sums of squares (RSS)."}
-
-par(pty="s", mar=c(4,4,1,1))
-screeplot(comp.arc)
+```{r, echo = FALSE, results = 'hide'}
+# write.csv(gn_cal, "./MW_coda/MW_base_spec_cal.csv", rownames = FALSE)
+# write.csv(gn_val, "./MW_coda/MW_base_spec_val.csv", rownames = FALSE)
 ```
 
-## Archetypal classification
-
-Similar to other clustering and ordination algorithms, we can use the identified archetypes for dimensional reduction and unsupervised classification.
+To save time on running the notebook we have pre-trained all 45 base plus the subsequent 15 stacked learners (section 3.3) that we shall be using for the model testing and prediction rule generation steps below. This is a bit of hack! However, you can download and check all of the associated `.Rds` model objects and dataframes from our OSF repository [here](https://osf.io/49px5/). To run the next sections you have to download the needed files using the following links: [`MW_stack_spec_cal.csv`](https://osf.io/gw6uv) and [`MW_stack_spec_val.csv`](https://osf.io/2qem8). Again, please make sure to place those into your designated working directory.
 
 ```{r}
-# Select no. of archetypes, the scree plot in Fig. 1 above suggests 3-7 ... we use 4 here
-comp.arc4 <- bestModel(comp.arc[[4]])
+# Scrub extraneous objects in memory
+rm(list=setdiff(ls(), c("cpdat")))
 
-# Classify CLRs by "dominant archetypes" (DA)
-darc <- as.data.frame(predict(comp.arc4, codat[,6:20]))
-darc$DA <- apply(darc, 1, which.max)
-colnames(darc) <- c("A1","A2","A3","A4","DA")
-cpdat <- cbind(cpdat, darc)
-codat <- cbind(codat, darc)
-
-# Write out the cpdat file for reuse
-dir.create("MW_coda", showWarnings=F)
-write.csv(cpdat, "./MW_coda/MW_coda_archetypes.csv", row.names = F)
+# Read the base-learner training and testing files
+gn_cal <- read.table("MW_stack_spec_cal.csv", header=T, sep=",")
+gn_cal[ , c('X.1', 'X')] <- list(NULL)
+gn_val <- read.table("MW_stack_spec_val.csv", header=T, sep=",")
+gn_val[ , c('X.1', 'X')] <- list(NULL)
 ```
 
-```{r, echo = FALSE, fig.align = "center", fig.show = 'hold', fig.height = 10.5, fig.cap = "**Fig. 2**: Boxplots of nutrient compositional differences between dominant archetypes."}
+## Stacked-learner training
 
-par(mfrow = c(5,3), pty="s", mar=c(2,4,1,1))
-boxplot(codat$Na ~ codat$DA, notch = T, ylab = "Na", xlab = "", cex.axis = 1, cex.lab = 1.3)
-boxplot(codat$Mg ~ codat$DA, notch = T, ylab = "Mg", xlab = "", cex.axis = 1, cex.lab = 1.3)
-boxplot(codat$P ~ codat$DA, notch = T, ylab = "P", xlab = "", cex.axis = 1, cex.lab = 1.3)
-boxplot(codat$S ~ codat$DA, notch = T, ylab = "S", xlab = "", cex.axis = 1, cex.lab = 1.3)
-boxplot(codat$K ~ codat$DA, notch = T, ylab = "K", xlab = "", cex.axis = 1, cex.lab = 1.3)
-boxplot(codat$Ca ~ codat$DA, notch = T, ylab = "Ca", xlab = "", cex.axis = 1, cex.lab = 1.3)
-boxplot(codat$Cr ~ codat$DA, notch = T, ylab = "Cr", xlab = "", cex.axis = 1, cex.lab = 1.3)
-boxplot(codat$Mn ~ codat$DA, notch = T, ylab = "Mn", xlab = "", cex.axis = 1, cex.lab = 1.3)
-boxplot(codat$Fe ~ codat$DA, notch = T, ylab = "Fe", xlab = "", cex.axis = 1, cex.lab = 1.3)
-boxplot(codat$Co ~ codat$DA, notch = T, ylab = "Co", xlab = "", cex.axis = 1, cex.lab = 1.3)
-boxplot(codat$Cu ~ codat$DA, notch = T, ylab = "Cu", xlab = "", cex.axis = 1, cex.lab = 1.3)
-boxplot(codat$Zn ~ codat$DA, notch = T, ylab = "Zn", xlab = "", cex.axis = 1, cex.lab = 1.3)
-boxplot(codat$Se ~ codat$DA, notch = T, ylab = "Se", xlab = "", cex.axis = 1, cex.lab = 1.3)
-boxplot(codat$Mo ~ codat$DA, notch = T, ylab = "Mo", xlab = "", cex.axis = 1, cex.lab = 1.3)
-boxplot(codat$I ~ codat$DA, notch = T, ylab = "I", xlab = "", cex.axis = 1, cex.lab = 1.3)
+This next chunk then fits and predicts ensemble regressions based on the 45 base-learner models, using the training data.
+
+```{r, results = 'hide'}
+# Calibration labels
+labs <- c("P") ## **insert other labels here** 
+lcal <- as.vector(t(gn_cal[labs]))
+
+# Base-learner calibration features
+fcal <- gn_cal[ ,c(30:74)]
+
+# Start doParallel to parallelize model fitting
+set.seed(1235813)
+mc <- makeCluster(detectCores())
+registerDoParallel(mc)
+
+# Specify model training controls
+tc <- trainControl(method="repeatedcv", number=10, repeats=3, allowParallel = TRUE, savePredictions="final")
+
+# Model training
+en <- train(fcal, lcal,
+            method = "glmStepAIC",
+            trControl = tc,
+            metric = "RMSE")
+
+stopCluster(mc)
+fname <- paste("./MW_coda/", labs, "_ens.rds", sep = "")
+saveRDS(en, fname)
+
+# Generate predictions (**change the labels manually here**)
+gn_cal$P_en <- predict(en, gn_cal)
+
+# Same for the test-set
+gn_val$P_en <- predict(en, gn_val)
 ```
 
+```{r, echo = FALSE, results = 'hide'}
+# write.csv(gn_cal, "./MW_coda/MW_stack_spec_cal.csv", rownames = FALSE)
+# write.csv(gn_val, "./MW_coda/MW_stack_spec_val.csv", rownames = FALSE)
+```
 
- 
+## Prediction uncertainties
+
+The models that have been developed have not seen any of the test-set (evaluation) data up to this point. While there are many ways to quantify the uncertainty inherent in the ensemble predictions, we take a simple but quite robust approach here using quantile regression with ([quantreg](https://cran.r-project.org/web/packages/quantreg/quantreg.pdf)). We are mainly interested in the initial spread of the [ROI-wide](https://en.wikipedia.org/wiki/Region_of_interest) predictions (sensu, their 80% probable intervals).
+
+```{r, results = 'hide'}
+# Quantile regression test-set fits
+qNa <- rq(Na ~ Na_en, tau=c(0.1,0.5,0.9), data = gn_val)
+qMg <- rq(Mg ~ Mg_en, tau=c(0.1,0.5,0.9), data = gn_val)
+qP <- rq(P ~ P_en, tau=c(0.1,0.5,0.9), data = gn_val)
+qS <- rq(S ~ S_en, tau=c(0.1,0.5,0.9), data = gn_val)
+qK <- rq(K ~ K_en, tau=c(0.1,0.5,0.9), data = gn_val)
+qCa <- rq(Ca ~ Ca_en, tau=c(0.1,0.5,0.9), data = gn_val)
+qCr <- rq(Cr ~ Cr_en, tau=c(0.1,0.5,0.9), data = gn_val)
+qMn <- rq(Mn ~ Mn_en, tau=c(0.1,0.5,0.9), data = gn_val)
+qFe <- rq(Fe ~ Fe_en, tau=c(0.1,0.5,0.9), data = gn_val)
+qCo <- rq(Co ~ Co_en, tau=c(0.1,0.5,0.9), data = gn_val)
+qCu <- rq(Cu ~ Cu_en, tau=c(0.1,0.5,0.9), data = gn_val)
+qZn <- rq(Zn ~ Zn_en, tau=c(0.1,0.5,0.9), data = gn_val)
+qSe <- rq(Se ~ Se_en, tau=c(0.1,0.5,0.9), data = gn_val)
+qMo <- rq(Mo ~ Mo_en, tau=c(0.1,0.5,0.9), data = gn_val)
+qI <- rq(I ~ I_en, tau=c(0.1,0.5,0.9), data = gn_val)
+```
+
+```{r, echo = FALSE, fig.align = "center", fig.show = 'hold', fig.height = 12, fig.cap = "**Fig. 2**: Quantile regression plots of predicted vs measured test-set values (on a centered log ratio scale). The red lines are estimated at the median, the blue lines are estimated at the 5% and 95% quantiles."}
+
+colors <- c("dodger blue", "tomato", "dodger blue")
+par(mfrow = c(5,3), pty = "s", mar=c(2,4,1,1))
+
+plot(Na ~ Na_en, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qNa$coefficients)) {
+    abline(coef(qNa)[, j], col = colors[j], lwd = 2)}
+
+plot(Mg ~ Mg_en, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qMg$coefficients)) {
+    abline(coef(qMg)[, j], col = colors[j], lwd = 2)}
+
+plot(P ~ P_en, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qP$coefficients)) {
+    abline(coef(qP)[, j], col = colors[j], lwd = 2)}
+
+plot(S ~ S_en, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qP$coefficients)) {
+    abline(coef(qP)[, j], col = colors[j], lwd = 2)}
+
+plot(K ~ K_en, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qP$coefficients)) {
+    abline(coef(qP)[, j], col = colors[j], lwd = 2)}
+
+plot(Ca ~ Ca_en, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qP$coefficients)) {
+    abline(coef(qP)[, j], col = colors[j], lwd = 2)}
+
+plot(Cr ~ Cr_en, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qP$coefficients)) {
+    abline(coef(qP)[, j], col = colors[j], lwd = 2)}
+
+plot(Mn ~ Mn_en, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qP$coefficients)) {
+    abline(coef(qP)[, j], col = colors[j], lwd = 2)}
+
+plot(Fe ~ Fe_en, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qP$coefficients)) {
+    abline(coef(qP)[, j], col = colors[j], lwd = 2)}
+
+plot(Co ~ Co_en, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qP$coefficients)) {
+    abline(coef(qP)[, j], col = colors[j], lwd = 2)}
+
+plot(Cu ~ Cu_en, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qP$coefficients)) {
+    abline(coef(qP)[, j], col = colors[j], lwd = 2)}
+
+plot(Zn ~ Zn_en, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qP$coefficients)) {
+    abline(coef(qP)[, j], col = colors[j], lwd = 2)}
+
+plot(Se ~ Se_en, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qP$coefficients)) {
+    abline(coef(qP)[, j], col = colors[j], lwd = 2)}
+
+plot(Mo ~ Mo_en, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qP$coefficients)) {
+    abline(coef(qP)[, j], col = colors[j], lwd = 2)}
+
+plot(I ~ I_en, data = gn_val, xlab="", col = "dark grey", cex.lab = 1.3)
+for (j in 1:ncol(qP$coefficients)) {
+    abline(coef(qP)[, j], col = colors[j], lwd = 2)}
+```
+
+## Ionomic prediction rules
+
+This final chunk is intended to generate a foundation (at least from the computing side) for the development of a context-based [recommender system](https://en.wikipedia.org/wiki/Recommender_system) that would allow users to make evidence based decisions about crop selections, biofortification and/or mineral nutrient supplementation practices in different soil environments. This is a spectrally augmented version of the model that was presented in section 2.2.  
+
+```{r}
+# Compositional setup
+coda <- rbind(gn_cal, gn_val)
+coda <- coda[, c(1, 74:88)]
+cpdat <- merge(cpdat, coda, by = 'ssid')
+y = acomp(cpdat[,8:22])
+
+# Select covariates
+crop <- cpdat$crop
+Na_en <- cpdat$Na_en
+Mg_en <- cpdat$Mg_en
+P_en <- cpdat$P_en
+S_en <- cpdat$S_en
+K_en <- cpdat$K_en
+Ca_en <- cpdat$Ca_en
+Cr_en <- cpdat$Cr_en
+Mn_en <- cpdat$Mn_en
+Fe_en <- cpdat$Fe_en
+Co_en <- cpdat$Co_en
+Cu_en <- cpdat$Cu_en
+Zn_en <- cpdat$Zn_en
+Se_en <- cpdat$Se_en
+Mo_en <- cpdat$Mo_en
+I_en <- cpdat$I_en
+
+# Fit compositional regression
+spec_rules.lm <- lm(clr(y) ~ crop + Na_en + Mg_en + P_en + S_en + K_en + Ca_en + Cr_en + Mn_en + Fe_en + Co_en +
+                    Cu_en + Zn_en + Se_en + Mo_en + I_en)
+summary(spec_rules.lm)
+```
+
+# Main takeaways
+
