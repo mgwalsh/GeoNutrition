@@ -1,7 +1,7 @@
 ---
 title: Spatial predictions of cereal grain ionomes from Ethiopia and Malawi
 author: M.G. Walsh, A.M. Sila, D.B. Kumssa, A.R. Mossa, T. Amede, P.C. Nalivata, D. Gashu, S.M. Haefele, S. Gameda, M.R. Broadley, E.J.M. Joy, E.H. Bailey, R.M. Lark, B.A. Walsh, R. Rodríguez Iglesias, J. Chamberlin and S. Snapp
-date: `r format(Sys.time(), '%d, %B, %Y')`
+date: "`r format(Sys.time(), '%d, %B, %Y')`"
 output:
   html_document:
     toc: true
@@ -542,6 +542,6 @@ coefs
 
 * Because the current data set is fairly small (by machine learning standards), there are caveats with regard to how well the current predictions generalize to below analytical detection limits, unseen, or unmeasured regions of interest (see e.g., Figs. 5 & 6). Our main intent for this notebook was to provide a computational example of how ionomic information might be gathered more cost-effectively in the future. However, it is also quite encouraging to be able to show that for two countries as environmentally different as Ethiopia and Malawi common, spatial, ionomic relationships and spatial patterns can be learned reliably using our proposed approach.
 
-* Generating more field and laboratory data are not expected to be cost-prohibitive for either national governments nor for international donors and could be accomplished quickly. In fact, the models presented here should be further exposed to georeferenced validation data, We will provide more information about this and will also suggest "*GeoNutrition*" standard operating procedures in a subsequent notebook.
+* Generating more field and laboratory data are not expected to be cost-prohibitive for either national governments nor for international donors and could be accomplished quickly. In fact, the models presented here should be further exposed to georeferenced validation data. We will provide more information about this and will also suggest "*GeoNutrition*" standard operating procedures in a subsequent notebook.
 
 Any questions, comments or corrections related to this notebook are most welcome via [AFSIS](mailto:mgw.africasoils.info), and we will attempt to include them in any updates.
