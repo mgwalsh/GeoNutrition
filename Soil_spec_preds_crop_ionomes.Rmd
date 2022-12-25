@@ -357,8 +357,8 @@ This final chunk is intended to generate a foundation (at least from the computi
 ```{r}
 # Compositional setup
 coda <- rbind(gn_cal, gn_val)
-coda <- coda[, c(1, 74:88)]
-cpdat <- merge(cpdat, coda, by = 'ssid')
+pred <- coda[, c(1, 74:88)]
+cpdat <- merge(cpdat, pred, by = 'ssid')
 y = acomp(cpdat[,8:22])
 
 # Select covariates
@@ -380,20 +380,74 @@ Mo_en <- cpdat$Mo_en
 I_en <- cpdat$I_en
 
 # Fit compositional regression
-spec_rules.lm <- lm(clr(y) ~ crop + Na_en + Mg_en + P_en + S_en + K_en + Ca_en + Cr_en +
-                    Mn_en + Fe_en + Co_en + Cu_en + Zn_en + Se_en + Mo_en + I_en)
-summary(spec_rules.lm)
+(spec_rules.lm <- lm(clr(y) ~ crop + Na_en + Mg_en + P_en + S_en + K_en + Ca_en + Cr_en +
+                    Mn_en + Fe_en + Co_en + Cu_en + Zn_en + Se_en + Mo_en + I_en))
+```
+
+```{r, echo = FALSE, fig.align = "center", fig.show = 'hold', fig.height = 11, fig.cap = "**Fig. 3**: Compositional model fits for the entire (n = 1,806) Malawi dataset on the centered log ratio scale. The fitted vs measured 1:1 reference lines are shown in red."}
+
+comp.fit <- as.data.frame(predict(spec_rules.lm, coda))
+names(comp.fit) <- c("Na_ru", "Mg_ru", "P_ru", "S_ru", "K_ru", "Ca_ru", "Cr_ru", "Mn_ru", "Fe_ru", "Co_ru",
+                     "Cu_ru", "Zn_ru", "Se_ru", "Mo_ru", "I_ru")
+coda <- cbind(coda, comp.fit)
+
+par(mfrow = c(5,3), pty = "s", mar=c(2,4,1,1))
+
+plot(Na ~ Na_ru, data = coda, xlab="", col = "dark grey", cex.lab = 1.3)
+abline(c(0,1), col = "tomato", lwd = 2)
+
+plot(Mg ~ Mg_ru, data = coda, xlab="", col = "dark grey", cex.lab = 1.3)
+abline(c(0,1), col = "tomato", lwd = 2)
+
+plot(P ~ P_ru, data = coda, xlab="", col = "dark grey", cex.lab = 1.3)
+abline(c(0,1), col = "tomato", lwd = 2)
+
+plot(S ~ S_ru, data = coda, xlab="", col = "dark grey", cex.lab = 1.3)
+abline(c(0,1), col = "tomato", lwd = 2)
+
+plot(K ~ K_ru, data = coda, xlab="", col = "dark grey", cex.lab = 1.3)
+abline(c(0,1), col = "tomato", lwd = 2)
+
+plot(Ca ~ Ca_ru, data = coda, xlab="", col = "dark grey", cex.lab = 1.3)
+abline(c(0,1), col = "tomato", lwd = 2)
+
+plot(Cr ~ Cr_ru, data = coda, xlab="", col = "dark grey", cex.lab = 1.3)
+abline(c(0,1), col = "tomato", lwd = 2)
+
+plot(Mn ~ Mn_ru, data = coda, xlab="", col = "dark grey", cex.lab = 1.3)
+abline(c(0,1), col = "tomato", lwd = 2)
+
+plot(Fe ~ Fe_ru, data = coda, xlab="", col = "dark grey", cex.lab = 1.3)
+abline(c(0,1), col = "tomato", lwd = 2)
+
+plot(Co ~ Co_ru, data = coda, xlab="", col = "dark grey", cex.lab = 1.3)
+abline(c(0,1), col = "tomato", lwd = 2)
+
+plot(Cu ~ Cu_ru, data = coda, xlab="", col = "dark grey", cex.lab = 1.3)
+abline(c(0,1), col = "tomato", lwd = 2)
+
+plot(Zn ~ Zn_ru, data = coda, xlab="", col = "dark grey", cex.lab = 1.3)
+abline(c(0,1), col = "tomato", lwd = 2)
+
+plot(Se ~ Se_ru, data = coda, xlab="", col = "dark grey", cex.lab = 1.3)
+abline(c(0,1), col = "tomato", lwd = 2)
+
+plot(Mo ~ Mo_ru, data = coda, xlab="", col = "dark grey", cex.lab = 1.3)
+abline(c(0,1), col = "tomato", lwd = 2)
+
+plot(I ~ I_ru, data = coda, xlab="", col = "dark grey", cex.lab = 1.3)
+abline(c(0,1), col = "tomato", lwd = 2)
 ```
 
 # Main takeaways
 
 * This notebook is intended to be a companion to a similar notebook, which covers spatial prediction workflows ([download here](https://osf.io/7xzqv)). In fact, the two approaches could be deployed either in tandem or in sequence to guide and stratify new measurement campaigns, recommender validation, and evidence-based nutrient monitoring activities.
 
-* The ensemble models that are presented here perform very well in cross-validation runs, and are not overfit ... in our opinion. However, because the current dataset is small (by machine learning standards), there are caveats with regard to how well the current predictions generalize to unseen or uncalibrated regions of interest (see Fig. 2). Our main intent for this notebook was to provide a computational example of how ionomic information might be gathered more effectively in the future. The spectral models would learn from new spectral data quickly and would be expected to improve and generalize to new regions of interest over time.
+* The ensemble models that are presented here perform very well in cross-validation runs, and are not [overfit](https://www.ibm.com/topics/overfitting). The classical thinking about this is concerned with finding the “sweet spot” between under-fitting and over-fitting, and this is what we have attempted here. However, because the current test dataset is quite small (by machine learning standards), there remain caveats with regard to how well the stacked learner predictions generalize to unseen regions of interest (see Fig. 2). The spectral models would learn from any new data quickly and are expected to improve and generalize to new regions of interest over time.
 
-* Generating more field and laboratory data are not expected to be cost-prohibitive for either national governments nor for international donors and could be accomplished quickly. We will provide more information about this might be accomplished and will also suggest "*GeoNutrition*" standard operating procedures in a subsequent notebook.
+* Generating more field and laboratory data are not expected to be cost-prohibitive for either national governments nor for international donors and could be accomplished quickly. Both the current and any future models should be challenged with more training, testing and validation data from outside of Malawi. We will provide more information about this might be accomplished in the future and will also suggest "*GeoNutrition*" standard operating procedures in a subsequent notebook.
 
-* The "[low code](https://www.ibm.com/topics/low-code)" development approach that is taken here can be run on a normal (2.4 GHz, 8 core, 32 Gb memory) computer. This is expected to facilitate data and code reuse that promotes further innovation and operational applications development of [recommender systems](https://en.wikipedia.org/wiki/Recommender_system) in GeoNutrition projects in Africa.
+* The "[low code](https://www.ibm.com/topics/low-code)" development approach that is taken here runs on a normal (2.4 GHz, 8 core, 32 Gb memory) computer. This is expected to facilitate data and code reuse that will hopefully promote further innovation and operational applications development of [recommender systems](https://en.wikipedia.org/wiki/Recommender_system) of GeoNutrition projects in Africa.
 
 Any questions, comments or corrections related to this notebook are most welcome via [AFSIS](mailto:mgw.africasoils.info), and we will attempt to include them in any updates.
 
