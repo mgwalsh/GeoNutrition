@@ -1,0 +1,147 @@
+---
+title: AfSIS SOPs for collecting soil and crop samples
+author: M.G. Walsh and B.A. Walsh
+date: "`r format(Sys.time(), '%d, %B, %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    fig_caption: true
+    keep_md: true
+    number_sections: true
+    css: style1.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Before you go into the field
+
+## Field crew safety first!
+
+* Before collecting any kind of sample, thoroughly familiarize yourself with your overall sampling area and the people living there. For the most part, you can do this remotely with software such as GeoSurvey, but nothing beats an initial drive-through (or drone flyover).
+
+* Prior to going in the field, you should always introduce yourself to the local authorities and communities to inform them about the purpose of the survey you are conducting. Farmer or pastoralist group meetings are a useful venue for this, especially when accompanied by someone from the designated in-country authority.
+
+* Carry an official letter of introduction from the nationally designated authority (e.g. the Ministry of Agriculture) with you at all times, preferably written in the local language.
+
+* Where possible, hire a local facilitator (or guide) from the community to assist with fieldwork. Have the facilitator introduce the field team to individual land owners and describe what you are doing on their land before taking any samples. Always ask for permission to access!
+
+* Avoid any areas where you might be placing the field team at any risk of harm or injury (e.g. in conflict areas, steep terrain, in wildlife areas, or in areas with active bush fires).
+
+* All members of field teams must be able to orienteer and navigate by both GPS and with a map and compass.
+
+* Wherever possible have at least 2 survey teams (vehicles) operating in the same general area. 
+
+* Always avoid sampling near cemeteries or places of worship.
+
+* Always carry an emergency 1^rst^ aid kit. At least one field team member should be properly trained in basic 1^rst^ aid. Keep the 1st aid kit stocked and up to date at all times. Get advice from medical personnel to help you put the kits together.
+
+* Similarly, all survey vehicles should be equipped with basic repair and spare parts kits. Get advice from a qualified mechanic on how to outfit and maintain these.
+
+* Carry adequate amounts of drinking water, rehydration salts, and emergency rations especially when on foot for extended periods of time.
+
+* When in remote areas, be sure someone knows exactly where the team will be operating on any given day. Carry a satellite phone where necessary or use a [personal locator device](https://www.outdoorgearlab.com/topics/camping-and-hiking/best-personal-locator-beacon). When in cell phone range, turn on your phone’s location service. SMS your planned daily location to a colleague who can initiate an emergency response, if needed.
+
+* Identify emergency evacuation routes and nearest hospitals or extraction points in case of emergency. In East Africa emergency evacuations are well covered by [AMREF](https://flydoc.org/). They also provide excellent 1rst aid training. In other countries you may be able to find a contractor for first responder support, or in some instances you may want to use a global service such as [Global Rescue](https://www.globalrescue.com/landing-pages/grdifference/?gcc=359418222&msclkid=90d961ca6b7113f6047c02664ec660e6).
+
+## Field equipment list
+
+You will need the following field equipment:
+
+* an Android phone or tablet with camera and GPS. Note that it is useful to also keep a charged spare in the survey vehicle in case things go wrong.
+
+* a separate GPS device (optional, but highly recommended for field navigation).
+
+* 3 soil augers per survey vehicle marked with colored tape at 20 and 50 cm from the tip. For general use, we recommend [Eijkelkamp combination augers](https://www.royaleijkelkamp.com/en-us/products/augers-samplers/soil-augers-samplers/hand-augers/combination-edelman-auger/). 
+
+* 6, 20-liter plastic buckets, for pooling soil and plant samples.
+
+* 1, 10-liter plastic jerry can for water, for wetting soil before augering, where needed.
+
+* a rope or (preferably) a thin wire cable marked with colored tape at 2.8, 4.6, and 5.6 meters for laying out sampling plots.
+
+* sturdy, ~1-2 liter, sealable plastic containers (e.g., see [here](https://www.amazon.com/dp/B01ADBSEP8?pd_rd_i=B01ADBSKOI&pf_rd_p=b000e0a0-9e93-480f-bf78-a83c8136dfcb&pf_rd_r=248JKSD83BKNZ32EGZ41&pd_rd_wg=qoVuV&pd_rd_w=7IFRo&pd_rd_r=a46da598-0ec2-41d3-9463-50d5a366c7cd&th=1)), 1 container per rock, soil or plant sample. 
+
+* sticky UUSID sample labels, 2 for each sample container. More on this below.
+
+* a [mini-drone](https://www.amazon.com/dp/B0BL3R3L45/ref=redir_mobile_desktop?_encoding=UTF8&aaxitk=e615fd0a88b80ded45b0138b6a268cbc&content-id=amzn1.sym.7e9cd8c2-888c-46c4-82d2-714b2b703021%3Aamzn1.sym.7e9cd8c2-888c-46c4-82d2-714b2b703021&hsa_cr_id=5100691360801&pd_rd_plhdr=t&pd_rd_r=96d80204-81b3-4820-92b8-401690331068&pd_rd_w=jtI6X&pd_rd_wg=7UeGw&qid=1673441230&ref_=sbx_be_s_sparkle_lsi4d_asin_0_img&sr=1-1-9e67e56a-6f64-441f-a281-df67fc737124&th=1) (optional, but highly recommended for detailed field investigations).
+
+## Android software installs
+
+You initially need to install the following applications on your Android device (tablet and/or smartphone). You can search for these directly on Google Play.
+
+* [KoboCollect](https://play.google.com/store/apps/details?id=org.koboc.collect.android&gl=US&pli=1), to georeference, time stamp, and log in your field observations and samples.
+
+* [FreeScan barcode scanner](https://play.google.com/store/apps/details?id=app.qrcode&gl=US), or similar, to read QR coded sample labels (see below).
+
+* [Mapit GIS](https://play.google.com/store/apps/details?id=com.osedok.gisdatacollector&gl=US) if you are going to be using your phone or tablet for field navigation, rather than a separate GPS unit, and/or you want to do detailed geospatial surveys.
+
+Once you have installed the software on your Android device, start KoboCollect and set the server address that will link you to the appropriate forms. You can use the AfSIS one to try things out, but we suggest that you you establish your own KoboToolbox account and develop your own forms. You can always contact us at **https://africasoils.info** to help with account setups and form development.
+
+<br>
+```{r, echo=FALSE, fig.align="center", fig.cap="**Fig. 1:** Setting up KoboCollect on your Android device.", out.width = '65%'}
+
+knitr::include_graphics("KoBo.jpg")
+```
+
+## Sample labels
+
+You will need to print soil sample labels. These are generated as machine-readable QR codes based on an UUSID (Universally Unique Sample ID). The reason for having a unique machine-readable label is to be able to decisively track any given physical sample that is collected from the field, through the subsequent laboratory processes, and into the respective databases and physical sample archives. 
+
+<br>
+```{r, echo=FALSE, fig.align="center", fig.cap="**Fig. 2:** Universally Unique Sample IDs. Attach one to the bottom of the sample container, and one to its lid", out.width = '45%'}
+
+knitr::include_graphics("QR code.png")
+```
+
+## Upload sampling locations to your GPS
+
+If you are not using a predetermined sampling plan, just ignore this entire section. If on the other hand, you are using a predetermined landscape sampling plan, the procedures for field navigation will depend on which type of GPS setup you are using. We recommend using a separate GPS device for field navigation rather than using your Android phone or tablet for this purpose. This is because of the inherent battery limitations of Android devices when their internal GPS is switched on. Many GPS devices and Android applications, including [Mapit GIS](https://mapitgis.com/), can read GPX waypoint files. GPX files can be produced with a software package called [GPSBabel](https://www.gpsbabel.org/), which you should install on your computer. It’s free, works on Windows, Linux, and Mac machines and converts files to a wide variety of GPS formats. The simplest way of using GPSBabel is to convert a comma-separated values (*.csv) file, which contains values of decimal Latitude and Longitude and a waypoint label, to a GPX file. A example, which does grid ID labeling and waypoint conversions, can be found [here](https://africasoils.info/wp-content/uploads/2022/07/RwaSIS_cropland_sample.html).
+
+# In the field
+
+## Composite soil sampling
+
+Once you arrive at a sampling location, lay out a plot as shown in the diagram below, using the marked cable, and place the actual sampling locations on (roughly) the black dots, at the specified distances from the center of the plot.
+At each of the (black dot) locations use your marked soil auger to collect soil samples to both 20 cm (topsoil) and then to 50 cm (subsoil) depths. The reason for using this particular sampling pattern is to obtain composite samples that are representative of a 100 m^2^ area, for both topsoils and subsoils.
+
+```{r, echo=FALSE, fig.align="center", fig.cap="**Fig. 3:** Schematic of 100 m^2^ composite soil sampling plots. Each of the black dots represents an auger location, plus a center point, where a GPS reading is collected. Ensure that you stand at that spot when completing the associated KoboCollect form.", out.width = '45%'}
+
+knitr::include_graphics("Plot layout.jpg")
+```
+
+To collect a composite soil sample you will need to:
+
+* Place the 4 (0-20 cm) topsoil sub-samples into a plastic bucket and mix them thoroughly.
+
+* Place ~500 grams of the well-mixed (0-20 cm) topsoil into a pre-labeled plastic container. Then follow the KoboCollect form instructions for logging in the sample.
+
+* Do the same for the 4 (20-50 cm) subsoil samples.
+
+Note that in collecting the samples with a soil auger, it is often useful to wet the auger hole with a small amount of water. Depending on the soil texture and the moisture of the soil being collected, wetting can be repeated as the soil is recovered from the auger hole. Record your observations using the appropriate KoboToolbox form. **You will be prompted to save everything once you have completed the form**.
+
+## Composite crop samples 
+
+The mechanics for collecting crop samples are similar to those for soil samples, though they can vary a little in terms of plot size and layout. The key difference is that crop samples can only be collected in the field during quite short periods of time during any given year; generally at harvest. The main sample collection advice for crops is that when you do collect any kind crop sample, that you also collect a soil sample, at the same location, preferably on the same sampling frame. You should collect and label those samples using the same containers as those that are used for soil samples. 
+
+## Cropping systems observations
+
+The AfSIS ["Crop scout"](https://kobo.humanitarianresponse.info/#/forms/a3jwzkBTtDvdaZJgR6YjAe/landing) KoboCollect form is intended to allow you to record georeferenced and time stamped crop and livestock distribution observations and photos into the AfSIS and/or into your own database. The main steps for completing this form are summarized in the diagram below. There is no special equipment required to run this, and it takes about 5 minutes to complete. Please use it frequently, even if you are not collecting and physical samples ... definitely use it when you are collecting samples, because it helps enormously in interpreting the sample context and data.
+
+<br>
+```{r mixed_photos, echo=FALSE, fig.align="center", fig.cap="**Fig. 4:** The KoboCollect Crop scout form, available [here](https://kobo.humanitarianresponse.info/#/forms/a3jwzkBTtDvdaZJgR6YjAe/landing).", out.width = '90%'}
+
+knitr::include_graphics("Crop_scout.jpg")
+```
+
+## Optional drone flights
+
+Drone flights also provide great additional context for interpreting field observations and sample data. There are quite robust models available for under 1,000 U$. These can usually be flown without a license or filing a flight plan when they are <250 gm in weight. They are also very simple to operate from a survey vehicle, with minimal training. Check with the local aviation authorities as to wether they are legal to operate in your project ROIs. Watch out for bird attacks and shotguns.
+
+# Back in cell phone range
+
+Once you are back from the field or at a place with an Internet connection, you should **upload all of your saved forms to the relevant KoboToolbox URLs**. All you need to do is to open KoboToolbox and then tap “Send Finalized Form” from the main screen of KoboCollect (see Fig. 1). This will prompt you to upload all of the saved forms on your device. Our recommendation is to upload your saved forms as often as your Internet access in the field/office permits.
+
+Any questions, comments or corrections related to this notebook are most welcome via [AFSIS](mailto:mgw.africasoils.info).
