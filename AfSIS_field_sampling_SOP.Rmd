@@ -107,7 +107,7 @@ If you are not using a predetermined sampling plan, just ignore this entire sect
 Once you arrive at a sampling location, lay out a plot as shown in the diagram below, using the marked cable, and place the actual sampling locations on (roughly) the black dots, at the specified distances from the center of the plot.
 At each of the (black dot) locations use your marked soil auger to collect soil samples to both 20 cm (topsoil) and then to 50 cm (subsoil) depths. The reason for using this particular sampling pattern is to obtain composite samples that are representative of a 100 m^2^ area, for both topsoils and subsoils.
 
-```{r, echo=FALSE, fig.align="center", fig.cap="**Fig. 3:** Schematic of 100 m^2^ composite soil sampling plots. Each of the black dots represents an auger location, plus a center point, where a GPS reading is collected. Ensure that you stand at that spot when completing the associated KoboCollect form.", out.width = '45%'}
+```{r, echo=FALSE, fig.align="center", fig.cap="**Fig. 3:** Schematic of 100 m^2^ composite soil sampling plots. Each of the black dots represents an auger location. A GPS reading is collected at the plot center point. Ensure that you stand at that spot when completing the associated KoboCollect form.", out.width = '45%'}
 
 knitr::include_graphics("Plot layout.jpg")
 ```
@@ -138,10 +138,10 @@ knitr::include_graphics("Crop_scout.jpg")
 
 ## Optional drone flights
 
-Drone flights also provide great additional context for interpreting field observations and sample data. There are quite robust models available for under 1,000 U$. These can usually be flown without a license or filing a flight plan when they are <250 gm in weight. They are also very simple to operate from a survey vehicle, with minimal training. Check with the local aviation authorities as to wether they are legal to operate in your project ROIs. Watch out for bird attacks and shotguns.
+Drone flights also provide great additional context for interpreting field observations and sample data. There are quite robust models available for under 1,000 U$. These can usually be flown without a drone pilot's license or filing a flight plan when they are <250 gm in weight. They are also very simple to operate from a survey vehicle, with minimal training. Check with the local aviation authorities as to wether they are legal to operate in your project ROIs. Do not fly near airports, and watch out for bird attacks and shotguns.
 
 # Back in cell phone range
 
 Once you are back from the field or at a place with an Internet connection, you should **upload all of your saved forms to the relevant KoboToolbox URLs**. All you need to do is to open KoboToolbox and then tap “Send Finalized Form” from the main screen of KoboCollect (see Fig. 1). This will prompt you to upload all of the saved forms on your device. Our recommendation is to upload your saved forms as often as your Internet access in the field/office permits.
 
-Any questions, comments or corrections related to this notebook are most welcome via [AFSIS](mailto:mgw.africasoils.info).
+Any questions, comments or corrections related to this notebook are most welcome via [AfSIS](mailto:mgw.africasoils.info).
