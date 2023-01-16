@@ -1,0 +1,97 @@
+---
+title: GeoNutrition -- Workflows for assessing locally "hidden hunger risks" at scale
+author: M.G. Walsh, B.A. Walsh, A.M. Sila, J. Chamberlin and S. Snapp
+date: "`r format(Sys.time(), '%d, %B, %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    fig_caption: true
+    keep_md: true
+    number_sections: true
+    css: style1.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+```
+
+# Introduction
+
+Micronutrient deficiencies ([MNDs](https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/micronutrient-deficiency) or "hidden hunger") remain a serious global problem, but the rural poor who do not have access to supplements such as "Ready to Use Therapeutic Foods" ([RUTFs](https://www.unicef.org/supply/stories/saving-lives-rutf-ready-use-therapeutic-food)) and/or widely varied diets are most affected (see e.g., [Stevens, et al., 2022](https://www.thelancet.com/action/showPdf?pii=S2214-109X%2822%2900367-9)). For subsistence farmers and pastoralists in Sub-Saharan Africa who mostly consume food that they grow in close proximity to where they live, the physical, chemical and biological conditions of soils on which crops are grown and livestock are grazed influence [trophic dynamics](https://en.wikipedia.org/wiki/Trophic_level), nutrient transfers across food system boundaries, and overall dietary quality for people (see Fig. 1). Key data and information constraints for reducing MNDs, especially in SSA, include: (1.) a lack of spatial baseline and monitoring data on the distribution of any recurrent or chronic MNDs (locally), within a country or other [region of interest](https://en.wikipedia.org/wiki/Region_of_interest), (2.) limited national research capacity to get the information needed to provide a sound evidence base for evidence-based nutrient management, and (3.) the use of *ad hoc* and/or untested nutrient management recommendations to policy makers, private sector investors, and other interested parties, including citizens, donors, and public health professionals.
+
+<br>
+```{r, echo=FALSE, fig.align="center", fig.cap="**Fig. 1**: The main trophic pathways in food systems within a pixel or voxel. Note that the dashed arrow (from Food crops to Livestock) flags one potentially pathological trophic pathway that can occur in some food systems.", out.width = '60%'}
+
+knitr::include_graphics("trophic_levels.jpg")
+```
+
+> "For rural households consuming locally sourced food — including many smallholder farming communities — the location of a residence can be the largest influencing factor in determining the dietary intake of micronutrients ..." ([Gashu et. al., 2021](https://www.nature.com/articles/s41586-021-03559-3)). 
+
+To overcome the inherent data and information constraints in GeoNutrition work, the general workflow that is described here is much like cooking a good pizza, or any other meal (see the image below) ... for paying customers. Fundamentally, one needs the right ingredients (preferably sourced fresh and locally), one needs appropriate appliances (electric pizza ovens don't work in rural Africa, a wood fired one might be better), and one needs consistent recipes that have both "taste and price appeal" to the customers who are being served; otherwise, they might not be back. The analogy is more complicated when one is trying to train someone else to cook the same pizza. Chefs will tend to put their own spin on things! In cooking that is probably a good thing (e.g., see: [Best pizzas in New York, 2022](https://loving-newyork.com/best-pizza-in-nyc/)). In data science it may or may not be such a good idea, particularly if one is aiming for a consistently successful information service, for which customers are willing to pay.  
+
+<br>
+```{r, echo=FALSE, fig.align="center", fig.cap="**Prediction pizza** -- by Cassie Kozyrkov (2022). See more [here](https://kozyrkov.medium.com/2022-a-productivity-revolution-f34f32a27e5b).", out.width = '70%'}
+
+knitr::include_graphics("Cassie_Kozyrkov.jpg")
+```
+
+This [use case](https://en.wikipedia.org/wiki/Use_case) document focuses on data science workflows for GeoNutrition risk assessments at scale, in Africa. We describe the steps for findable, accessible, interoperable, and reusable ([FAIR](https://www.nature.com/articles/sdata201618)) data collections, choices among algorithms and models to generate predictions, risk assessments and evidence-based nutrient management recommender systems. The notebook is flexible with regard to changes in context, data, algorithms, models, and predictions as these become available and potentially useful for GeoNutrition risk assessment tasks at national scales. The data collection (or ingredients) section directly below is probably the most important, because it provides the foundation for all of the desk work that follows. It is also the most expensive, arduous, and potentially dangerous part of GeoNutrition work for you and your crews.
+
+# Data collection
+
+## Defining a region of interest with GeoSurvey
+
+Quantifying the geographical extent, location and spatial dynamics of croplands, rural and urban settlements and different types of vegetation cover provides essential information for monitoring and managing human dominated landscapes. Large portions of Africa remain a virtual "*terra incognita*" in this context. The main reason for monitoring [land cover](https://en.wikipedia.org/wiki/Land_cover) is to assess where in a particular country or region of interest ([ROI](https://en.wikipedia.org/wiki/Region_of_interest)) significant impacts of humans on ecosystem services can be expected within different land cover / use classes, and *vice versa*. [GeoSurvey](https://geosurvey.qed.ai/) is an application for rapidly collecting and analyzing [land cover](https://en.wikipedia.org/wiki/Land_cover) observations at low cost. High resolution satellite images and/or other aerial (e.g., aircraft or drone) imagery can be systematically and rapidly labeled by either trained image interpreters and/or by vetted *crowds* of [Citizen Scientists](https://en.wikipedia.org/wiki/Citizen_science). When done with care, these observations can result in large, well-structured, properly labeled, geospatial data sets that are suitable for data mining, machine learning and geostatistical predictions of land cover, and in some instances land use. Fig. 2 shows some recently labeled examples from Rwanda.
+
+<br>
+```{r, echo=FALSE, fig.align="center", fig.cap="**Fig. 2:** Examples of tagged multilabel GeoSurvey observations from Rwanda (2019).", out.width = '85%'}
+
+knitr::include_graphics("RW_Geos_2019.jpg")
+```
+
+The detailed manual for conducting your own GeoSurveys is available from [QED.ai](https://docs.google.com/document/d/1y-HYUSYpDVESPdmEcl3I2kuL0bwrT41wMiq0zE9uzOs/edit). The manual should definitely be consulted to obtain more information about how GeoSurvey can be used to carry out potentially high value LULC surveys of remote areas. There is also a great slide deck available [here](https://docs.google.com/presentation/d/1vBQ-By8LLvyJQzMBFaqUuRwFFeL7Y8QXUtBifx-3jn4/edit#slide=id.g14d47405c8_0_0), which illustrates different labeling approaches. A new companion multilabel land cover classification notebook for Malawi is **[available here](https://africasoils.info/wp-content/uploads/2022/09/Stacked_multilabel_lccs.html)**. It describes how GeoSurvey data can be used to accurately delineate the cropland regions of a country that are typically of main interest in GeoNutrition work. The workflow can, and has been, extended to map other land cover / land use variables e.g., the density of buildings, soil conservation and irrigation infrastructure, and (some) types of crop distributions, e.g., paddy rice, oil palm, woodlots and orchards, tea and coffee, among others. It can be rapidly extended to cover additional geographies with new observations, and/or alternative machine learning models (see Fig. 3). There are also quite a few additional examples for other African countries available at: [GeoSurvey data prediction workflows](https://osf.io/vxc97/).
+
+<br>
+```{r lccs_map, echo=FALSE, fig.align="center", out.width = '85%'}
+
+knitr::include_graphics("RW_TZ_LCCS.png")
+```
+
+```{r lccs_legend, echo=FALSE, fig.align="center", fig.cap="**Fig. 3:** GeoSurvey-based land cover maps and area estimates for Rwanda and Tanzania (2020). Note that the area estimates outlined in red are potential regions of interest for GeoNutrition work.", out.width = '80%'}
+
+knitr::include_graphics("LCCS_legend.png")
+```
+
+## Specifying a representative sampling frame
+
+Once a suitable ROI has been identified (e.g., Fig. 3), selecting an appropriate sampling frame for ground observations and measurements and/or experiments is a critical planning step for GeoNutrition projects. This determines both the main and recurrent costs of any mapping, monitoring and experimental programs as well as the resulting precision and accuracy of the predictions that are made about the prevalence and incidence of MNDs. It should also be completely reproducible. We generally favor spatially balanced sampling ([Deville and Tillé, 2004](https://academic.oup.com/biomet/article-abstract/91/4/893/459329?redirectedFrom=fulltext)) at the national in this context, which allows sampling based on the relevant inclusion probabilities, while aiming for balance and spread with respect to speciﬁed covariates and/or constraints. 
+
+A recent example of a spatially balanced sampling frame for the RwaSIS project is **[available here](https://africasoils.info/wp-content/uploads/2022/07/RwaSIS_cropland_sample.html)**. In Rwanda, ground survey sites falling within the cropland ROI, determined from GeoSurvey predictions, were selected purely for spatial balance, which entails that the mean coordinates of sample sites are close to the mean coordinates of all points in the sample frame, and which have adequate spatial spread ([Grafström and Schelin, 2014](https://cran.r-project.org/web/packages/BalancedSampling/index.html)). The data frame that is generated is also written as a csv file, which can be used as waypoint input to a GPS (e.g., with [GPSBabel](https://www.gpsbabel.org)), tablet or smart phone for ground navigation. Please take a look at the notebook, and feel free to alter it for your own GeoNutrition surveys and experiments.
+
+## Field sampling
+
+[Field sampling SOPs](https://africasoils.info/wp-content/uploads/2023/01/AfSIS_field_sampling_SOP.html)
+
+## Lab work
+
+```{r spectrometers, echo=FALSE, fig.align="center", fig.cap="**Fig. 4:** Main field lab spectrometers. Note that these can be operated off-grid, and used on rock, soil and plant samples.", out.width = '85%'}
+
+knitr::include_graphics("Spectrometers.jpg")
+```
+
+# Data warehouse
+
+## Data repository
+
+## Sample curation
+
+All samples are identified with a QR code that is assigned in the field, which contains the metadata of sample collection and allows for samples to be tracked by computers throughout processing and analysis. However, they are difficult for humans to interpret. [W3W](https://what3words.com/) divides the globe into 3-meter squares and gives a 3-word name to every square. This allows for an identifier that is easy for humans to keep track of, allows for alphabetizing of samples, and easily pairs top and subsoils from a given location. It is a simple substitute for both soil / plant sample IDs and lat/long readings that are difficult for people to process. When a sample comes in from the field and the lat/long has been linked to the QR code, new labels can be printed with the W3W identifier and pertinent metadata. These can now be read by both humans and computers, which minimizes confusion during sample handling and curation.
+
+# Models and predictions
+
+[Compositional data](https://doi.org/10.3389/fpls.2013.00039) profiles such as those shown in Fig. 2 present a special class of multivariate [labeling](https://en.wikipedia.org/wiki/Labeled_data) problems for data mining, machine learning, prediction, monitoring and [recommender systems](https://en.wikipedia.org/wiki/Recommender_system) because they contain multiple labels that are interdependent. Another important characteristic of ionomic data is that they are usually defined as vectors with strictly positive components whose sum is constant (e.g, 1 or 100%). Both these characteristics are solvable from a machine learning perspective, but they have not been adequately tested in terms of their potential influence in describing and predicting the associated soil-crop trophic interactions and their potential nutritional outcomes for people (and livestock).
+
+
+# Information services
+
