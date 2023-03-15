@@ -16,6 +16,31 @@ output:
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 ```
 
+# Food Systems defined (by ChatGPT 4.0)
+
+**Prompt: <in 300 words summarize the state of knowledge about food systems and include in text citations>**
+
+Food systems are complex networks of activities, organizations, and actors involved in the production, processing, distribution, and consumption of food. Over the past few decades, the study of food systems has gained significant attention as it is critical for addressing global challenges such as hunger, malnutrition, food insecurity, and environmental sustainability.
+
+One important area of research in food systems is understanding the impact of agriculture on the environment. According to a study by Foley et al. (2011), agriculture is responsible for 80% of global deforestation, 70% of freshwater use, and 30% of greenhouse gas emissions. Furthermore, food production is a significant contributor to soil erosion, water pollution, and loss of biodiversity. As such, there is a growing interest in sustainable agriculture practices such as agroecology, which aims to promote the use of ecological principles and biodiversity to enhance agricultural productivity and resilience (Altieri, 2002).
+
+Another area of research in food systems is the impact of globalization on food production and consumption patterns. As argued by McMichael (2004), globalization has led to the emergence of a global food system characterized by the concentration of power and resources in the hands of a few transnational corporations, the standardization of food production and consumption, and the displacement of small-scale farmers and local food systems. This has resulted in a number of negative consequences, including the loss of food sovereignty, increased food insecurity, and the erosion of cultural diversity (Clapp & Fuchs, 2009).
+
+Finally, there is a growing recognition of the need to address food system challenges through a holistic and integrated approach that takes into account the social, economic, and environmental dimensions of food systems. This is reflected in the concept of food system transformation, which aims to create more sustainable, equitable, and resilient food systems through a range of interventions such as policy reforms, institutional innovations, and community-led initiatives (HLPE, 2021).
+
+In conclusion, the study of food systems is critical for addressing some of the most pressing global challenges. While there have been significant advances in our understanding of food systems, there is still much to be learned and achieved in terms of building more sustainable, equitable, and resilient food systems for all.
+
+**References:**
+
+Altieri, M. A. (2002). Agroecology: the science of natural resource management for poor farmers in marginal environments. Agriculture, ecosystems & environment, 93(1-3), 1-24.
+
+Clapp, J., & Fuchs, D. (2009). Corporate power in the agro-food system. In The political economy of food and nutrition (pp. 67-92). Routledge.
+
+HLPE. (2021). Food Systems and Nutrition: Report of the High Level Panel of Experts on Food Security and Nutrition of the Committee on World Food Security. Rome: FAO.
+
+McMichael, P. (2004). Globalization, development and food sovereignty. Third World Quarterly, 25(6), 1079-1088.
+Foley, J. A., Ramankutty, N., Brauman, K. A., Cassidy, E. S., Gerber, J. S., Johnston, M., ... & Zaks, D. (2011). Solutions for a cultivated planet. Nature, 478(7369), 337-342.
+
 # Introduction
 
 Micronutrient deficiencies, also known as MNDs or "hidden hunger," continue to be a global issue, particularly among the rural poor who lack access to supplements like Ready to Use Therapeutic Foods (RUTFs), biofortified crops, or a diverse diet. This is especially true for subsistence farmers and pastoralists in Sub-Saharan Africa who rely on locally grown food (see e.g., [Stevens, et al., 2022](https://www.thelancet.com/action/showPdf?pii=S2214-109X%2822%2900367-9)). The physical, chemical, and biological conditions of the soil on which crops are grown and livestock are grazed play a crucial role in trophic dynamics, nutrient transfers across food system boundaries, and overall dietary quality for people. However, there are significant data and information constraints when it comes to reducing MNDs in SSA. These include a lack of diagnostic and spatial baselines and monitoring data on the distribution of recurrent or chronic MNDs, limited national research capacity to gather evidence for local nutrient management, and the use of untested nutrient management recommendations for policymakers and other stakeholders.
